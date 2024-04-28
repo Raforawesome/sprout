@@ -2,6 +2,7 @@
 mod import_screen;
 mod index_screen;
 use dioxus::{desktop::Config, prelude::*};
+use import_screen::ImportScreen;
 use index_screen::IndexScreen;
 /// # Sprout
 /// A stardew valley mod manager.
@@ -10,6 +11,8 @@ use index_screen::IndexScreen;
 enum Routes {
     #[route("/")]
     IndexScreen {},
+    #[route("/import")]
+    ImportScreen {},
 }
 
 fn main() {
