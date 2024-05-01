@@ -1,0 +1,77 @@
+[application]
+
+# dioxus project name
+name = "sprout"
+
+# default platfrom
+# you can also use `dx serve/build --platform XXX` to use other platform
+# value: web | desktop
+default_platform = "desktop"
+
+# Web `build` & `serve` dist path
+out_dir = "dist"
+
+# resource (static) file folder
+asset_dir = "public"
+
+# hot reload by default
+hot_reload = true
+
+[web.app]
+
+# HTML title tag content
+title = "Sprout | Stardew Valley Mod Manager"
+
+[web.watcher]
+
+index_on_404 = true
+
+watch_path = ["src", "examples"]
+
+# include `assets` in web platform
+[web.resource]
+
+# CSS style file
+style = ["./public/global.css"]
+
+# Javascript code file
+script = []
+
+[web.resource.dev]
+
+# Javascript code file
+# serve: [dev-server] only
+script = []
+
+[application.plugins]
+
+available = true
+
+required = []
+
+[bundler]
+# Bundle identifier
+identifier = "io.github.sprout"
+
+# Bundle publisher
+publisher = "sprout"
+
+# Bundle icon
+icon = ["./public/sprout@1x.png"]
+
+# Bundle resources
+resources = ["public/*"]
+
+# Bundle copyright
+copyright = ""
+
+# Bundle category
+category = "Utility"
+
+# Bundle short description
+short_description = "A simple stardew valley mod manager."
+
+# Bundle long description
+long_description = """
+Simple GUI tool to manage SMAPI mods for Stardew Valley.
+"""
