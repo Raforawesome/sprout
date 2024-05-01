@@ -25,10 +25,12 @@ pub fn TitleHeader(sub_title: &'static str) -> Element {
         div {
             id: "import",
             class: "import",
-            p { class: "label", "Game location:" }
-            input {
-                id: "class-box",
-                class: "path-box"
+            div {
+                p { class: "label", "Game location:" }
+                input {
+                    id: "class-box",
+                    class: "path-box"
+                }
             }
         }
     }
