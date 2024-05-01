@@ -2,6 +2,7 @@ html,
 body {
     background-color: #222f3e;
     font-family:
+        Inter,
         system-ui,
         -apple-system,
         BlinkMacSystemFont,

@@ -1,6 +1,9 @@
+use crate::components::TitleHeader;
 use dioxus::prelude::*;
 
 #[component]
 pub fn ImportScreen() -> Element {
-    None
+    rsx! {
+        TitleHeader { sub_title: "Import" }
+    }
 }
