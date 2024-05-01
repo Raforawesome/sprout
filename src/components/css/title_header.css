@@ -48,10 +48,18 @@
 }
 
 .import {
-    margin-left: 22.8%;
     width: 54.4%;
     margin-top: 10.44rem;
     margin-bottom: 27.237%;
+    margin-left: auto;
+    margin-right: auto;
+    display: flex;
+    align-self: center;
+    flex-direction: column;
+    justify-content: center;
+    vertical-align: middle;
+    /* text-align: center; */
+    align-items: center;
 }
 
 .import-button {
