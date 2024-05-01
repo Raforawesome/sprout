@@ -1,7 +1,14 @@
 #![cfg_attr(target_os = "windows", windows_subsystem = "windows")]
+mod components;
 mod import_screen;
 mod index_screen;
-use dioxus::{desktop::Config, prelude::*};
+use dioxus::{
+    desktop::{
+        tao::{platform::macos::WindowBuilderExtMacOS, window::Theme},
+        Config, LogicalSize, WindowBuilder,
+    },
+    prelude::*,
+};
 use import_screen::ImportScreen;
 use index_screen::IndexScreen;
 /// # Sprout
@@ -19,17 +26,30 @@ fn main() {
     LaunchBuilder::desktop()
         .with_cfg(
             Config::new()
-                .with_background_color((39, 174, 96, 1))
-                .with_data_directory(get_data_dir()) // set to $XDG_CONFIG_HOME/.svsprout
-                // .with_resource_directory("./assets/")
-                .with_disable_context_menu(true), // disable right click menu
+                .with_background_color((34, 47, 62, 1))
+                .with_data_directory(get_data_dir().join("data/"))
+                .with_resource_directory(get_data_dir().join("assets/"))
+                .with_disable_context_menu(true)
+                .with_window(
+                    WindowBuilder::new()
+                        .with_theme(Some(Theme::Dark))
+                        .with_title("Sprout")
+                        // .with_movable_by_window_background(true)
+                        // .with_titlebar_hidden(true)
+                        .with_titlebar_transparent(true)
+                        .with_inner_size(LogicalSize::new(1000, 685))
+                        .with_resizable(false),
+                ),
         )
         .launch(App);
 }
 
 #[component]
 fn App() -> Element {
-    rsx! { Router::<Routes> {} }
+    rsx! {
+        style { {include_str!("../public/global.css")} }
+        Router::<Routes> {}
+    }
 }
 
 pub fn get_data_dir() -> std::path::PathBuf {
