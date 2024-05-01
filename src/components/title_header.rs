@@ -1,11 +1,4 @@
 use dioxus::prelude::*;
-use manganis::mg;
-
-pub const ICON: &str = mg!(image("./public/sprout@1x.png")
-    .size(440, 657)
-    // .format(ImageType::Png)
-    .preload())
-.path();
 
 #[component]
 pub fn TitleHeader(sub_title: &'static str) -> Element {
