@@ -1,20 +1,34 @@
 use dioxus::prelude::*;
-use manganis::{mg, ImageAsset};
+use manganis::mg;
 
-pub const ICON: ImageAsset = mg!(image("./public/sprout@1x.png")
+pub const ICON: &str = mg!(image("./public/sprout@1x.png")
     .size(440, 657)
     // .format(ImageType::Png)
-    .preload());
+    .preload())
+.path();
 
 #[component]
-pub fn TitleHeader() -> Element {
+pub fn TitleHeader(sub_title: &'static str) -> Element {
     rsx! {
         style { {include_str!("css/title_header.css")} }
         div {
             id: "title-header",
             class: "title-header",
-            img {
-                src: "{ICON}"
+            img { class: "icon", src: "/sprout@1x.png" },
+            h1 { class: "title", "Sprout" },
+            h1 { class: "subtitle", "|" },
+            h1 { class: "subtitle", "{sub_title}" }
+        }
+
+        hr { class: "divider" }
+
+        div {
+            id: "import",
+            class: "import",
+            p { class: "label", "Game location:" }
+            input {
+                id: "class-box",
+                class: "path-box"
             }
         }
     }
