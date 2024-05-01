@@ -14,17 +14,5 @@ pub fn TitleHeader(sub_title: &'static str) -> Element {
         }
 
         hr { class: "divider" }
-
-        div {
-            id: "import",
-            class: "import",
-            div {
-                p { class: "label", "Game location:" }
-                input {
-                    id: "class-box",
-                    class: "path-box"
-                }
-            }
-        }
     }
 }
