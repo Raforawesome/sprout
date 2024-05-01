@@ -48,6 +48,7 @@ fn main() {
 fn App() -> Element {
     rsx! {
         style { {include_str!("../public/global.css")} }
+        link { rel: "stylesheet", href: "https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" }
         Router::<Routes> {}
     }
 }
