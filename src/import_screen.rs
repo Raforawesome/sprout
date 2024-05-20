@@ -6,6 +6,8 @@ use rfd::FileDialog;
 
 #[component]
 pub fn ImportScreen() -> Element {
+    let mut file_path = use_signal(PathBuf::new);
+
     rsx! {
         TitleHeader { sub_title: "Import" }
         style { {include_str!("./css/import_screen.css")} }
@@ -17,14 +19,28 @@ pub fn ImportScreen() -> Element {
                 p { class: "label", "Game location:" }
                 input {
                     id: "class-box",
-                    class: "path-box"
+                    class: "path-box",
+                    value: file_path().as_os_str().to_str().unwrap(),
+                    onchange: move |new| {
+                        file_path.set(PathBuf::from(new.value()))
+                    }
                 }
             }
-            span { class: "material-symbols-outlined picker", "folder" }
+            span {
+                class: "material-symbols-outlined button picker",
+                onclick: move |_| {
+                    if let Some(path) = pick_folder() {
+                        file_path.set(path);
+                    }
+                },
+                "folder"
+            }
         }
         button {
             id: "import-button",
-            class: "import-button",
+            class: "button import-button",
+            onclick: move |_| {
+            },
             "Import"
         }
     }
