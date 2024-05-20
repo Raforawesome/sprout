@@ -1,7 +1,10 @@
 # Sprout
 
 A simple GUI SMAPI mod manager for Stardew Valley.
-![logo](./public/sprout@1x.png)
+
+<p align="center" width="100%">
+  <img width="25%" src="./public/sprout@1x.png">
+</p>
 
 ---
 
