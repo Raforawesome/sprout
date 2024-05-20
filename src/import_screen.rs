@@ -1,5 +1,8 @@
+use std::path::PathBuf;
+
 use crate::components::TitleHeader;
 use dioxus::prelude::*;
+use rfd::FileDialog;
 
 #[component]
 pub fn ImportScreen() -> Element {
@@ -25,4 +28,10 @@ pub fn ImportScreen() -> Element {
             "Import"
         }
     }
+}
+
+fn pick_folder() -> Option<PathBuf> {
+    FileDialog::new()
+        .set_title("Choose your Stardew Valley folder:")
+        .pick_folder()
 }
