@@ -31,3 +31,12 @@ b,
 i {
     color: #ffffff;
 }
+
+.button {
+}
+.button:hover {
+    filter: brightness(70%);
+}
+.button:active {
+    filter: brightness(40%);
+}
