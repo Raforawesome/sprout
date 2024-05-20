@@ -1,6 +1,7 @@
 html,
 body {
     background-color: #222f3e;
+    overflow: hidden;
     font-family:
         Inter,
         system-ui,
