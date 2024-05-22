@@ -16,7 +16,10 @@
 .import-button {
     all: unset;
     display: flex;
-    margin-top: 11.66rem;
+    position: fixed;
+    bottom: 4rem;
+    left: 50%;
+    transform: translateX(-50%);
     width: 10.16494rem;
     height: 3.18419rem;
     flex-shrink: 0;
