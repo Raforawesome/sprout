@@ -1,8 +1,12 @@
 .import {
     width: 54.4%;
-    margin-top: 10.44rem;
+    /* margin-top: 10.44rem;
     margin-left: auto;
-    margin-right: auto;
+    margin-right: auto; */
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
     display: flex;
     align-self: center;
     flex-direction: row;
