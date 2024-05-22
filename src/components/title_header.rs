@@ -1,7 +1,7 @@
 use dioxus::prelude::*;
 
 #[component]
-pub fn TitleHeader(sub_title: &'static str) -> Element {
+pub fn TitleHeader(sub_title: String) -> Element {
     rsx! {
         style { {include_str!("css/title_header.css")} }
         div {

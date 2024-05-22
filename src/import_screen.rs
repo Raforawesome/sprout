@@ -9,7 +9,7 @@ pub fn ImportScreen() -> Element {
     let mut file_path = use_signal(PathBuf::new);
 
     rsx! {
-        TitleHeader { sub_title: "Import" }
+        TitleHeader { sub_title: "Import".to_string() }
         style { {include_str!("./css/import_screen.css")} }
         div {
             id: "import",
