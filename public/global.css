@@ -42,6 +42,9 @@ body {
 }
 
 * {
+    -webkit-user-select: none; /* Safari */
+    -ms-user-select: none; /* IE 10 and IE 11 */
+    user-select: none; /* Standard syntax */
     margin: 0;
     padding: 0;
 }
@@ -61,8 +64,11 @@ i {
 .button {
 }
 .button:hover {
-    filter: brightness(70%);
+    filter: brightness(85%);
 }
 .button:active {
-    filter: brightness(40%);
+    filter: brightness(35%);
+    text-shadow: none;
+    box-shadow: none;
+    translate: 0px 5%;
 }
