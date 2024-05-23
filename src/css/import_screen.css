@@ -1,41 +1,29 @@
 .import {
     width: 54.4%;
-    /* margin-top: 10.44rem;
-    margin-left: auto;
-    margin-right: auto; */
     position: fixed;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
     display: flex;
-    align-self: center;
     flex-direction: row;
     gap: 1rem;
-    justify-content: center;
     vertical-align: bottom;
-    /* text-align: center; */
     align-items: center;
 }
 
 .import-button {
     all: unset;
-    display: flex;
     position: fixed;
     bottom: 4rem;
     left: 50%;
     transform: translateX(-50%);
     width: 10.16494rem;
     height: 3.18419rem;
-    flex-shrink: 0;
-    flex-direction: column;
-    justify-content: center;
     text-align: center;
-    margin-left: auto;
-    margin-right: auto;
     color: #fff;
     font-size: 1.2rem;
     font-style: normal;
-    font-weight: 600;
+    font-weight: 500;
     line-height: normal;
     border-radius: 0.5rem;
     background: #54a0ff;
@@ -44,41 +32,38 @@
 }
 
 .label {
-    display: flex;
     width: 29.8125rem;
     height: 2.125rem;
-    flex-direction: column;
-    justify-content: center;
     color: #fff;
     text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-    font-size: 1.25rem;
-    font-style: normal;
-    font-weight: 600;
+    font-size: 1.05rem;
+    font-weight: 500;
     line-height: normal;
 }
 
 .path-box {
     all: unset;
     width: 29.8125rem;
-    height: 2rem;
-    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.1);
-    border-bottom: 0.25rem solid #ffffff;
+    height: 2.5rem;
+    box-shadow: 0px 0px 9px 3px rgba(0, 0, 0, 0.1);
+    border-bottom: 0.18rem solid #ffffff;
     border-color: #ffffff;
     color: #fff;
     text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.1);
-    font-size: 1.25rem;
+    font-size: 1rem;
     font-style: normal;
     font-weight: 300;
     line-height: normal;
+    display: inline-block;
 }
 
 .picker {
     color: #ffffff;
-    font-size: 4.125rem;
-    vertical-align: bottom;
-    align-self: bottom;
-    display: flex;
-    margin-top: 1.82rem;
+    font-size: 3.5rem;
+    margin-top: 2rem;
+    display: inline-block;
+    cursor: pointer;
+    text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
     font-variation-settings:
         "FILL" 1,
         "wght" 400,

@@ -15,7 +15,7 @@ pub fn ImportScreen() -> Element {
             id: "import",
             class: "import",
             div {
-                class: "display:flex;flex-direction:column;justify-content:left;",
+                class: "display:inline-block;flex-direction:column;justify-content:left;",
                 p { class: "label", "Game location:" }
                 input {
                     id: "class-box",
