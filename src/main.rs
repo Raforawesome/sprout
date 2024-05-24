@@ -1,4 +1,10 @@
 #![cfg_attr(target_os = "windows", windows_subsystem = "windows")]
+//! <h1>Sprout</h1>
+//! <h5>A Stardew Valley Mod Manager</h5>
+//! <hr>
+//! Sprout is a simple SMAPI mod manager for Stardew Valley.
+//! Currently caching is not implemented, and it works on a simple
+//! no-DB file-scan system.
 mod components;
 mod screens;
 use dioxus::{
@@ -11,8 +17,6 @@ use dioxus::{
 use import_screen::ImportScreen;
 use index_screen::IndexScreen;
 use screens::{import_screen, index_screen, mod_screen};
-/// # Sprout
-/// A stardew valley mod manager.
 
 #[derive(Routable, PartialEq, Clone)]
 enum Routes {
