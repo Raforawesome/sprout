@@ -1,13 +1,12 @@
-use std::path::{Path, PathBuf};
-
-use crate::components::TitleHeader;
+use crate::{components::TitleHeader, AppState};
 use dioxus::prelude::*;
 use rfd::FileDialog;
+use std::path::{Path, PathBuf};
 
 #[component]
 pub fn ImportScreen() -> Element {
-    let mut file_path = use_signal(PathBuf::new);
-    let mut hide_error = use_signal(|| true);
+    let mut state: Signal<AppState> = use_context::<Signal<AppState>>();
+    let mut hide_error: Signal<bool> = use_signal(|| true);
 
     rsx! {
         TitleHeader { sub_title: "Import".to_string() }
@@ -21,9 +20,9 @@ pub fn ImportScreen() -> Element {
                 input {
                     id: "class-box",
                     class: "path-box",
-                    value: file_path().as_os_str().to_str().unwrap(),
+                    value: state().game_path.as_os_str().to_str().unwrap(),
                     onchange: move |new| {
-                        file_path.set(PathBuf::from(new.value()))
+                        state.with_mut(|s| s.game_path = PathBuf::from(new.value()));
                     }
                 }
             }
@@ -31,7 +30,7 @@ pub fn ImportScreen() -> Element {
                 class: "material-symbols-outlined button picker",
                 onclick: move |_| {
                     if let Some(path) = pick_folder() {
-                        file_path.set(path);
+                        state.with_mut(|s| s.game_path = path);
                     }
                 },
                 "folder"
@@ -47,7 +46,14 @@ pub fn ImportScreen() -> Element {
             button {
                 id: "import-button",
                 class: "button import-button",
-                onclick: move |_| hide_error.set(validate_game_path(&file_path())),
+                onclick: move |_| {
+                    let passes: bool = validate_game_path(&state().game_path);
+                    hide_error.set(passes);
+                    if passes {
+                        let nav: Navigator = navigator();
+                        nav.replace("/mods");
+                    }
+                },
                 "Import"
             }
         }

@@ -7,6 +7,8 @@
 //! no-DB file-scan system.
 mod components;
 mod screens;
+use std::path::PathBuf;
+
 use dioxus::{
     desktop::{
         tao::{platform::macos::WindowBuilderExtMacOS, window::Theme},
@@ -18,12 +20,28 @@ use import_screen::ImportScreen;
 use index_screen::IndexScreen;
 use screens::{import_screen, index_screen, mod_screen};
 
+#[derive(Debug, Clone, Default)]
+pub struct AppState {
+    pub game_path: PathBuf,
+}
+
 #[derive(Routable, PartialEq, Clone)]
 enum Routes {
     #[route("/")]
     IndexScreen {},
     #[route("/import")]
     ImportScreen {},
+}
+
+#[component]
+fn App() -> Element {
+    let state: Signal<AppState> = use_context_provider(|| Signal::new(AppState::default()));
+
+    rsx! {
+        style { {include_str!("../public/global.css")} }
+        link { rel: "stylesheet", href: "https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" }
+        Router::<Routes> {}
+    }
 }
 
 fn main() {
@@ -48,15 +66,6 @@ fn main() {
                 ),
         )
         .launch(App);
-}
-
-#[component]
-fn App() -> Element {
-    rsx! {
-        style { {include_str!("../public/global.css")} }
-        link { rel: "stylesheet", href: "https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" }
-        Router::<Routes> {}
-    }
 }
 
 pub fn get_data_dir() -> std::path::PathBuf {
