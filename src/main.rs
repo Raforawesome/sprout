@@ -1,8 +1,6 @@
 #![cfg_attr(target_os = "windows", windows_subsystem = "windows")]
 mod components;
-mod import_screen;
-mod index_screen;
-mod mod_screen;
+mod screens;
 use dioxus::{
     desktop::{
         tao::{platform::macos::WindowBuilderExtMacOS, window::Theme},
@@ -12,6 +10,7 @@ use dioxus::{
 };
 use import_screen::ImportScreen;
 use index_screen::IndexScreen;
+use screens::{import_screen, index_screen, mod_screen};
 /// # Sprout
 /// A stardew valley mod manager.
 

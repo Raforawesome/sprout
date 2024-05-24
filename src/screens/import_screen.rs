@@ -10,7 +10,7 @@ pub fn ImportScreen() -> Element {
 
     rsx! {
         TitleHeader { sub_title: "Import".to_string() }
-        style { {include_str!("./css/import_screen.css")} }
+        style { {include_str!("../css/import_screen.css")} }
         div {
             id: "import",
             class: "import",
@@ -39,8 +39,7 @@ pub fn ImportScreen() -> Element {
         button {
             id: "import-button",
             class: "button import-button",
-            onclick: move |_| {
-            },
+            onclick: move |_| println!("Import clicked!"),
             "Import"
         }
     }
