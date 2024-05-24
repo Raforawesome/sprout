@@ -7,7 +7,7 @@ use rfd::FileDialog;
 #[component]
 pub fn ImportScreen() -> Element {
     let mut file_path = use_signal(PathBuf::new);
-    let mut hide_error = use_signal(|| false);
+    let mut hide_error = use_signal(|| true);
 
     rsx! {
         TitleHeader { sub_title: "Import".to_string() }
@@ -47,7 +47,7 @@ pub fn ImportScreen() -> Element {
             button {
                 id: "import-button",
                 class: "button import-button",
-                onclick: move |_| println!("Import clicked!"),
+                onclick: move |_| hide_error.set(validate_game_path(&file_path())),
                 "Import"
             }
         }
