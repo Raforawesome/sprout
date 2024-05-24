@@ -1,4 +1,4 @@
-use std::path::PathBuf;
+use std::path::{Path, PathBuf};
 
 use crate::components::TitleHeader;
 use dioxus::prelude::*;
@@ -7,6 +7,7 @@ use rfd::FileDialog;
 #[component]
 pub fn ImportScreen() -> Element {
     let mut file_path = use_signal(PathBuf::new);
+    let mut hide_error = use_signal(|| false);
 
     rsx! {
         TitleHeader { sub_title: "Import".to_string() }
@@ -36,11 +37,19 @@ pub fn ImportScreen() -> Element {
                 "folder"
             }
         }
-        button {
-            id: "import-button",
-            class: "button import-button",
-            onclick: move |_| println!("Import clicked!"),
-            "Import"
+        div {
+            class: "button-container",
+            p {
+                class: "error-text",
+                hidden: hide_error(),
+                "This game path is invalid!"
+            }
+            button {
+                id: "import-button",
+                class: "button import-button",
+                onclick: move |_| println!("Import clicked!"),
+                "Import"
+            }
         }
     }
 }
@@ -49,4 +58,17 @@ fn pick_folder() -> Option<PathBuf> {
     FileDialog::new()
         .set_title("Choose your Stardew Valley folder:")
         .pick_folder()
+}
+
+fn validate_game_path(p: &Path) -> bool {
+    #[cfg(not(target_os = "macos"))]
+    let mod_dir: PathBuf = p.join("Mods/");
+    #[cfg(target_os = "macos")]
+    let mod_dir: PathBuf = p.join("Contents/MacOS/Mods/");
+
+    p.exists()
+        && p.is_dir()
+        && p.file_name().is_some_and(|s| s == "Stardew Valley")
+        && mod_dir.exists()
+        && mod_dir.is_dir()
 }
