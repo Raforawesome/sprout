@@ -9,11 +9,11 @@ mod components;
 mod screens;
 use std::path::PathBuf;
 
+#[cfg(target_os = "macos")]
+use dioxus::desktop::tao::platform::macos::WindowBuilderExtMacOS;
+
 use dioxus::{
-    desktop::{
-        tao::{platform::macos::WindowBuilderExtMacOS, window::Theme},
-        Config, LogicalSize, WindowBuilder,
-    },
+    desktop::{tao::window::Theme, Config, LogicalSize, WindowBuilder},
     prelude::*,
 };
 use import_screen::ImportScreen;
@@ -48,6 +48,7 @@ fn App() -> Element {
     }
 }
 
+#[cfg(target_os = "macos")]
 fn main() {
     LaunchBuilder::desktop()
         .with_cfg(
@@ -65,6 +66,27 @@ fn main() {
                         // .with_titlebar_hidden(true)
                         .with_title_hidden(true)
                         .with_titlebar_transparent(true)
+                        .with_inner_size(LogicalSize::new(1000, 685))
+                        .with_resizable(false),
+                ),
+        )
+        .launch(App);
+}
+
+#[cfg(target_os = "windows")]
+fn main() {
+    LaunchBuilder::desktop()
+        .with_cfg(
+            Config::new()
+                .with_background_color((34, 47, 62, 1))
+                .with_data_directory(get_data_dir().join("data/"))
+                .with_resource_directory(get_data_dir().join("assets/"))
+                .with_disable_context_menu(true)
+                .with_window(
+                    WindowBuilder::new()
+                        .with_theme(Some(Theme::Dark))
+                        .with_title("Sprout")
+                        .with_movable_by_window_background(true)
                         .with_inner_size(LogicalSize::new(1000, 685))
                         .with_resizable(false),
                 ),
