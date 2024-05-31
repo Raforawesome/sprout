@@ -18,6 +18,7 @@ use dioxus::{
 };
 use import_screen::ImportScreen;
 use index_screen::IndexScreen;
+use mod_screen::ModScreen;
 use screens::{import_screen, index_screen, mod_screen};
 
 #[derive(Debug, Clone, Default)]
@@ -26,16 +27,19 @@ pub struct AppState {
 }
 
 #[derive(Routable, PartialEq, Clone)]
+#[allow(clippy::enum_variant_names)]
 enum Routes {
     #[route("/")]
     IndexScreen {},
     #[route("/import")]
     ImportScreen {},
+    #[route("/mods")]
+    ModScreen {},
 }
 
 #[component]
 fn App() -> Element {
-    let state: Signal<AppState> = use_context_provider(|| Signal::new(AppState::default()));
+    let _state: Signal<AppState> = use_context_provider(|| Signal::new(AppState::default()));
 
     rsx! {
         style { {include_str!("../public/global.css")} }
