@@ -1,0 +1,30 @@
+.mod-list {
+    border-radius: 0.9375rem;
+    background: #576574;
+    width: 48.25rem;
+    height: 30.3125rem;
+    margin-left: 1.5rem;
+    margin-top: 2.5rem;
+}
+
+.mod-list tr th,
+.mod-list tr td {
+    vertical-align: baseline;
+    color: #ffffff;
+    text-align: left;
+    padding-left: 0.5rem;
+}
+
+.header-row {
+    border-radius: 0.9375rem 0.9375rem 0 0;
+    background: #8395a7;
+    height: 2.7rem;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.header-row p {
+    font-weight: 600;
+    text-align: left;
+}
