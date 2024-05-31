@@ -46,3 +46,22 @@
     height: 0.075rem;
     margin-bottom: 1rem;
 }
+
+.title-buttons {
+    display: flex;
+    flex-direction: row;
+    gap: 0.5rem;
+    position: fixed;
+    right: 1rem;
+    top: 0.5rem;
+    left: auto;
+}
+
+.title-button {
+    all: unset;
+    color: #ffffff;
+    background: none;
+    border: none;
+    font-size: 1.2rem;
+    font-weight: 600;
+}
