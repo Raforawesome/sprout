@@ -48,7 +48,7 @@ fn App() -> Element {
     }
 }
 
-#[cfg(target_os = "macos")]
+#[cfg(target_os = "none")]
 fn main() {
     LaunchBuilder::desktop()
         .with_cfg(
@@ -73,7 +73,7 @@ fn main() {
         .launch(App);
 }
 
-#[cfg(target_os = "windows")]
+// #[cfg(target_os = "windows")]
 fn main() {
     LaunchBuilder::desktop()
         .with_cfg(
@@ -86,9 +86,9 @@ fn main() {
                     WindowBuilder::new()
                         .with_theme(Some(Theme::Dark))
                         .with_title("Sprout")
-                        .with_movable_by_window_background(true)
                         .with_inner_size(LogicalSize::new(1000, 685))
-                        .with_resizable(false),
+                        .with_resizable(false)
+                        .with_decorations(false),
                 ),
         )
         .launch(App);
