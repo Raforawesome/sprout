@@ -20,16 +20,5 @@ pub fn ModScreen() -> Element {
                 p { style: "margin-left:4.31rem;margin-right:2rem", "Enabled" }
             }
         }
-        // table {
-        //     class: "mod-list",
-        //     tr {
-        //         class: "header-row",
-        //         th { style: "margin-left:1.06rem", input { "type": "checkbox" } }
-        //         th { style: "margin-left:1.94rem", "Name" }
-        //         th { style: "margin-left:12.69rem", "Version" }
-        //         th { style: "margin-left:4.31rem", "Min. Game Version" }
-        //         th { style: "margin-left:4.31rem;margin-right:2rem", "Enabled" }
-        //     }
-        // }
     }
 }
