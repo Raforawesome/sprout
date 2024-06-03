@@ -17,20 +17,21 @@ pub fn ModScreen() -> Element {
                     class: "mod-table",
                     div {
                         class: "header-row",
-                        span { style: "margin-left:1.06rem", input { "type": "checkbox" } }
-                        p { style: "margin-left:1.94rem", "Name" }
-                        p { style: "margin-left:12.69rem", "Version" }
-                        p { style: "margin-left:4.31rem", "Min. Game Version" }
-                        p { style: "margin-left:4.31rem;margin-right:2rem", "Enabled" }
+                        span { style: "margin-left:2.2%", input { "type": "checkbox" } }
+                        p { style: "margin-left:4%", "Name" }
+                        p { style: "margin-left:31%", "Version" }
+                        p { style: "margin-left:6.1%", "Min. Game Version" }
+                        p { style: "margin-left:6.1%", "Enabled" }
                     }
                 }
             }
             div {  // buttons container
                 class: "button-subgrid",
-                button {
-                    class: "button mod-action-button",
-                    "test"
-                }
+                button { class: "button mod-action-button", "Enable" }
+                button { class: "button mod-action-button", "Disable" }
+                span { class: "divider-gap" }
+                button { class: "button mod-action-button", "Find Updates" }
+                button { class: "button mod-action-button", "Export Mods" }
             }
         }
     }
