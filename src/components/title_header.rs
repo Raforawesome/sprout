@@ -9,11 +9,13 @@ pub fn TitleHeader(sub_title: String) -> Element {
             class: "title-buttons",
             button {
                 class: "material-symbols-outlined button title-button",
+                style: "color:#ff9f43",
                 onclick: |_| window().set_minimized(true),
                 "close_fullscreen"
             },
             button {
                 class: "material-symbols-outlined button title-button",
+                style: "color:#ee5253",
                 onclick: |_| window().close(),
                 "cancel"
             }
