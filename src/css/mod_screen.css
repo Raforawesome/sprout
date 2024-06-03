@@ -7,7 +7,7 @@
 }
 
 .header-row {
-    border-radius: 0.9375rem 0.9375rem 0 0;
+    border-radius: 10px 10px 0 0;
     background: #8395a7;
     height: 2.7rem;
     width: 100%;
@@ -34,7 +34,7 @@
 }
 
 .mod-table {
-    border-radius: 0.9375rem;
+    border-radius: 10px;
     background: #576574;
     width: 95%;
     height: 30.3125rem;
