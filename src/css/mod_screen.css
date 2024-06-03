@@ -1,12 +1,3 @@
-.mod-list {
-    border-radius: 0.9375rem;
-    background: #576574;
-    width: 48.25rem;
-    height: 30.3125rem;
-    margin-left: 1.5rem;
-    margin-top: 2.5rem;
-}
-
 .mod-list tr th,
 .mod-list tr td {
     vertical-align: baseline;
@@ -19,6 +10,7 @@
     border-radius: 0.9375rem 0.9375rem 0 0;
     background: #8395a7;
     height: 2.7rem;
+    width: 100%;
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -27,4 +19,51 @@
 .header-row p {
     font-weight: 600;
     text-align: left;
+}
+
+.mod-grid {
+    display: flex;
+    flex-direction: row;
+    gap: 0rem;
+    width: 100%;
+    align-self: center;
+    position: absolute;
+    top: 41vh;
+    transform: translateY(-30%);
+}
+
+.mod-subgrid {
+    width: 75%;
+    height: 100%;
+}
+
+.mod-table {
+    border-radius: 0.9375rem;
+    background: #576574;
+    width: 90%;
+    height: 30.3125rem;
+}
+
+.button-subgrid {
+    display: flex;
+    flex-direction: column;
+    width: 25%;
+    height: 100%;
+    gap: 1rem;
+    align-items: center;
+}
+
+.mod-action-button {
+    all: unset;
+    width: 20vw;
+    height: 3rem;
+    text-align: center;
+    color: #fff;
+    font-size: 1.2rem;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+    border-radius: 0.5rem;
+    background: #54a0ff;
+    text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
 }

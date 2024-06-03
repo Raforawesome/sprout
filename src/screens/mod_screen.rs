@@ -9,15 +9,28 @@ pub fn ModScreen() -> Element {
     rsx! {
         style { {include_str!("../css/mod_screen.css")} }
         TitleHeader { sub_title: "Mod List" }
-        div {
-            class: "mod-list",
+        div {  // container grid
+            class: "mod-grid",
             div {
-                class: "header-row",
-                span { style: "margin-left:1.06rem", input { "type": "checkbox" } }
-                p { style: "margin-left:1.94rem", "Name" }
-                p { style: "margin-left:12.69rem", "Version" }
-                p { style: "margin-left:4.31rem", "Min. Game Version" }
-                p { style: "margin-left:4.31rem;margin-right:2rem", "Enabled" }
+                class: "mod-subgrid",
+                div {  // mod list container
+                    class: "mod-table",
+                    div {
+                        class: "header-row",
+                        span { style: "margin-left:1.06rem", input { "type": "checkbox" } }
+                        p { style: "margin-left:1.94rem", "Name" }
+                        p { style: "margin-left:12.69rem", "Version" }
+                        p { style: "margin-left:4.31rem", "Min. Game Version" }
+                        p { style: "margin-left:4.31rem;margin-right:2rem", "Enabled" }
+                    }
+                }
+            }
+            div {  // buttons container
+                class: "button-subgrid",
+                button {
+                    class: "button mod-action-button",
+                    "test"
+                }
             }
         }
     }
