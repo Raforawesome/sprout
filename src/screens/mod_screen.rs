@@ -20,7 +20,7 @@ pub fn ModScreen() -> Element {
                         span { style: "margin-left:2.2%", input { "type": "checkbox" } }
                         p { style: "margin-left:4%", "Name" }
                         p { style: "margin-left:31%", "Version" }
-                        p { style: "margin-left:6.1%", "Min. Game Version" }
+                        p { style: "margin-left:6.1%", "Min. API Version" }
                         p { style: "margin-left:6.1%", "Enabled" }
                     }
                 }
