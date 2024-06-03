@@ -26,13 +26,13 @@ title = "Sprout | Stardew Valley Mod Manager"
 
 index_on_404 = true
 
-watch_path = ["src", "examples"]
+watch_path = ["src"]
 
 # include `assets` in web platform
 [web.resource]
 
 # CSS style file
-style = ["./public/global.css"]
+# style = ["./public/global.css"]
 
 # Javascript code file
 script = []
