@@ -1,6 +1,5 @@
 use crate::{components::TitleHeader, AppState};
 use dioxus::prelude::*;
-use std::path::PathBuf;
 
 #[component]
 pub fn ModScreen() -> Element {

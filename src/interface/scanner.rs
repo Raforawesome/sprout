@@ -4,6 +4,10 @@
 use super::mod_types::{Manifest, Mod};
 use std::path::{Path, PathBuf};
 
+/// # Scanner system
+/// This function scans the provided game directory
+/// for mod folders containing a manifest.json, then
+/// uses that information to create a [Vec] of [Mod] objects.
 pub fn find_mods(p: &Path) -> Vec<Mod> {
     #[cfg(not(target_os = "macos"))]
     let mod_dir: PathBuf = p.join("Mods/");
