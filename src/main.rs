@@ -6,6 +6,7 @@
 //! Currently caching is not implemented, and it works on a simple
 //! no-DB file-scan system.
 mod components;
+mod interface;
 mod screens;
 use std::path::PathBuf;
 
