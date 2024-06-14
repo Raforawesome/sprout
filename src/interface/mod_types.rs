@@ -1,8 +1,12 @@
 //! Class/type definition for a struct
 //! which represents a mod on the filesystem.
 
+use serde::Deserialize;
 use std::path::{Path, PathBuf};
 
+/// Rust native abstraction representing a
+/// mod folder in the Stardew Valley mods directory.
+#[derive(Debug, Clone, Default)]
 pub struct Mod {
     name: String,
     version: String,
@@ -48,4 +52,25 @@ impl Mod {
     pub fn set_checked(&mut self, checked: bool) {
         self.checked = checked;
     }
+
+    pub fn set_name(&mut self, name: String) {
+        self.name = name;
+    }
+
+    pub fn set_min_api(&mut self, min: String) {
+        self.min_api_version = min;
+    }
+
+    pub fn set_version(&mut self, version: String) {
+        self.version = version;
+    }
+}
+
+/// Serde structure to destructure a mod's manifest.json
+#[derive(Deserialize)]
+#[allow(non_snake_case)]
+pub struct Manifest {
+    pub Name: String,
+    pub Version: String,
+    pub MinimumApiVersion: String,
 }
