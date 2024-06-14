@@ -1,6 +1,6 @@
+use crate::LOGO_1;
 use dioxus::desktop::window;
 use dioxus::prelude::*;
-use sprout::LOGO_1;
 
 #[component]
 pub fn TitleHeader(sub_title: String) -> Element {

@@ -5,10 +5,6 @@
 //! Sprout is a simple SMAPI mod manager for Stardew Valley.
 //! Currently caching is not implemented, and it works on a simple
 //! no-DB file-scan system.
-mod components;
-mod interface;
-mod screens;
-use std::path::PathBuf;
 
 #[cfg(target_os = "macos")]
 use dioxus::desktop::tao::platform::macos::WindowBuilderExtMacOS;
@@ -20,12 +16,8 @@ use dioxus::{
 use import_screen::ImportScreen;
 use index_screen::IndexScreen;
 use mod_screen::ModScreen;
-use screens::{import_screen, index_screen, mod_screen};
-
-#[derive(Debug, Clone, Default)]
-pub struct AppState {
-    pub game_path: PathBuf,
-}
+use sprout::screens::{import_screen, index_screen, mod_screen};
+use sprout::AppState;
 
 #[derive(Routable, PartialEq, Clone)]
 #[allow(clippy::enum_variant_names)]
