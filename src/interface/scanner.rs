@@ -24,6 +24,7 @@ pub fn find_mods(p: &Path) -> Vec<Mod> {
             mod_struct.set_name(manifest.Name);
             mod_struct.set_version(manifest.Version);
             mod_struct.set_min_api(manifest.MinimumApiVersion);
+            mod_struct.set_enabled(true);
             Some(mod_struct)
         })
         .collect::<Vec<Mod>>()
