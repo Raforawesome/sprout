@@ -2,4 +2,4 @@
 //! between code and the mods on the filesystem.
 
 pub mod mod_types;
-pub mod scanner;
+pub mod mod_scanner;

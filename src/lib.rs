@@ -10,5 +10,5 @@ pub struct AppState {
     pub game_path: PathBuf,
 }
 
-// pub const LOGO_1: ImageAsset = mg!(image("./public/sprout@1x.png"));
-pub const LOGO_1: &str = "placeholder"; // necessary bc stupid compiler
+pub const LOGO_1: ImageAsset = mg!(image("./public/sprout@1x.png"));
+// pub const LOGO_1: &str = "placeholder"; // necessary bc stupid compiler
