@@ -22,6 +22,49 @@
     text-align: left;
 }
 
+.mod-row {
+    background: #576574;
+    height: 2.5rem;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.mod-row-alt {
+    background: rgba(0, 0, 0, 0.16);
+    height: 2.5rem;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.mod-row p,
+.mod-row-alt p {
+    font-weight: 300;
+    font-size: 1rem;
+    text-align: right;
+}
+
+.mod-row tr,
+.mod-row-alt tr {
+    display: flex;
+    vertical-align: middle;
+    /* align-self: center; */
+    /* align-items: center; */
+    /* align-content: center; */
+}
+
+.mod-row tr input,
+.mod-row-alt tr input {
+    display: flex;
+    align-content: center;
+    align-items: center;
+    margin-left: auto;
+    margin-right: auto;
+}
+
 .mod-grid {
     display: flex;
     flex-direction: row;
