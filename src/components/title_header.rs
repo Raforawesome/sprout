@@ -1,4 +1,3 @@
-use crate::LOGO_1;
 use dioxus::desktop::window;
 use dioxus::prelude::*;
 
@@ -25,8 +24,7 @@ pub fn TitleHeader(sub_title: String) -> Element {
             onmousedown: |_| window().drag(),
             id: "title-header",
             class: "title-header",
-            // img { class: "sprout-icon", src: "/sprout@1x.png" },
-            img { class: "sprout-icon", src: "{LOGO_1}" },
+            img { class: "sprout-icon", src: "/sprout@1x.png" },
             h1 { class: "title", "Sprout" },
             h1 { class: "subtitle", "|" },
             h1 { class: "subtitle", "{sub_title}" }
