@@ -47,20 +47,14 @@
     text-align: right;
 }
 
-.mod-row tr,
-.mod-row-alt tr {
+.mod-row td,
+.mod-row-alt td {
     display: flex;
     vertical-align: middle;
-    /* align-self: center; */
-    /* align-items: center; */
-    /* align-content: center; */
 }
 
-.mod-row tr input,
-.mod-row-alt tr input {
-    display: flex;
-    align-content: center;
-    align-items: center;
+.mod-row td input,
+.mod-row-alt td input {
     margin-left: auto;
     margin-right: auto;
 }

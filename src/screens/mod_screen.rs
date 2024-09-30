@@ -4,27 +4,27 @@ use dioxus::prelude::*;
 #[component]
 pub fn ModRow(mod_obj: Mod, alt: bool) -> Element {
     rsx! {
-        table {
+        tr {
             class: if alt { "mod-row-alt" } else { "mod-row" },
-            tr {
+            td {
                 style: "width:7%",
                 input {
                     "type": "checkbox",
                 }
             }
-            tr {
+            td {
                 style: "width:43%",
                 p { {mod_obj.name()} }
             }
-            tr {
+            td {
                 style: "width:20%",
                 p { {mod_obj.version()} }
             }
-            tr {
+            td {
                 style: "width:20%",
                 p { {mod_obj.min_api_version()} }
             }
-            tr {
+            td {
                 style: "width:10%",
                 p { {mod_obj.enabled().to_string()} }
             }
