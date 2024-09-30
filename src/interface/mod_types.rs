@@ -6,13 +6,13 @@ use std::path::{Path, PathBuf};
 
 /// Rust native abstraction representing a
 /// mod folder in the Stardew Valley mods directory.
-#[derive(Debug, Clone, Default)]
+#[derive(Debug, Clone, Default, PartialEq, Eq)]
 pub struct Mod {
     name: String,
     version: String,
     min_api_version: String,
     enabled: bool,
-    checked: bool,
+    pub checked: bool,
     folder: PathBuf,
 }
 
