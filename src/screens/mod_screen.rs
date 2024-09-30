@@ -13,15 +13,15 @@ pub fn ModRow(mod_obj: Mod, alt: bool) -> Element {
                 }
             }
             td {
-                style: "width:43%",
+                style: "width:40%",
                 p { {mod_obj.name()} }
             }
             td {
-                style: "width:20%",
+                style: "width:21%",
                 p { {mod_obj.version()} }
             }
             td {
-                style: "width:20%",
+                style: "width:18%",
                 p { {mod_obj.min_api_version()} }
             }
             td {
@@ -66,9 +66,9 @@ pub fn ModScreen() -> Element {
                                 style: "display:flex;margin-left:auto;margin-right:auto"
                             }
                         }
-                        p { style: "width:43%", "Name" }
-                        p { style: "width:20%", "Version" }
-                        p { style: "width:20%", "Min. API Version" }
+                        p { style: "width:40%", "Name" }
+                        p { style: "width:21%", "Version" }
+                        p { style: "width:18%", "Min API Ver." }
                         p { style: "width:10%", "Enabled" }
                     }
                     {mod_list}
