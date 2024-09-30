@@ -59,11 +59,17 @@ pub fn ModScreen() -> Element {
                     class: "mod-table",
                     div {
                         class: "header-row",
-                        span { style: "margin-left:2.2%", input { "type": "checkbox" } }
-                        p { style: "margin-left:4%", "Name" }
-                        p { style: "margin-left:31%", "Version" }
-                        p { style: "margin-left:6.1%", "Min. API Version" }
-                        p { style: "margin-left:6.1%", "Enabled" }
+                        span {
+                            style: "width:7%",
+                            input {
+                                "type": "checkbox",
+                                style: "display:flex;margin-left:auto;margin-right:auto"
+                            }
+                        }
+                        p { style: "width:43%", "Name" }
+                        p { style: "width:20%", "Version" }
+                        p { style: "width:20%", "Min. API Version" }
+                        p { style: "width:10%", "Enabled" }
                     }
                     {mod_list}
                 }
