@@ -72,5 +72,5 @@ impl Mod {
 pub struct Manifest {
     pub Name: String,
     pub Version: String,
-    pub MinimumApiVersion: String,
+    pub MinimumApiVersion: Option<String>,
 }
