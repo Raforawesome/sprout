@@ -35,7 +35,8 @@ pub fn ModRow(mod_obj: Mod, alt: bool) -> Element {
 #[component]
 pub fn ModScreen() -> Element {
     let state: Signal<AppState> = use_context::<Signal<AppState>>();
-    let mods: Vec<Mod> = crate::interface::mod_scanner::find_mods(state().game_path.as_path());
+    let mods: Vec<Mod> =
+        crate::interface::mod_scanner::find_active_mods(state().game_path.as_path());
 
     let mut alt: bool = true;
     let mod_list = mods.iter().map(|m| {
