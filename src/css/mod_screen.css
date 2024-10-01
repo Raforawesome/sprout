@@ -75,6 +75,7 @@
     background: #576574;
     width: 95%;
     height: 30.3125rem;
+    overflow: scroll;
 }
 
 .mod-subgrid {

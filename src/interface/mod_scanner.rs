@@ -18,11 +18,11 @@ pub fn find_active_mods(p: &Path) -> Vec<Mod> {
     mod_dir
         .read_dir()
         .expect("Failed to read mods folder!")
-        .filter_map(Result::ok) // filter out unreadable files
+        .filter_map(Result::ok) // filter out inaccessible files
         .filter(|f| f.file_type().is_ok_and(|f| f.is_dir())) // only read folders
         .map(|entry| entry.path().join("manifest.json")) // convert items to file path
         .filter(|path| path.exists()) // filter out non-mod folders
-        .filter_map(|path| std::fs::read_to_string(path).ok())
+        .filter_map(|path| std::fs::read_to_string(path).ok()) // Filter out files we can't read
         .filter_map(|manifest_json| {
             let manifest: Manifest = json5::from_str(&manifest_json).ok()?;
             let mut mod_struct: Mod = Mod::default();
