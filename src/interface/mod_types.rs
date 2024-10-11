@@ -12,8 +12,8 @@ pub struct Mod {
     version: String,
     min_api_version: String,
     enabled: bool,
-    pub checked: bool,
     folder: PathBuf,
+    checked: bool,
 }
 
 // Getters
@@ -51,6 +51,7 @@ impl Mod {
 
     pub fn set_checked(&mut self, checked: bool) {
         self.checked = checked;
+        // println!("{checked}");
     }
 
     pub fn set_name(&mut self, name: String) {
@@ -63,6 +64,10 @@ impl Mod {
 
     pub fn set_version(&mut self, version: String) {
         self.version = version;
+    }
+
+    pub fn set_folder(&mut self, folder: PathBuf) {
+        self.folder = folder;
     }
 }
 

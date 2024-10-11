@@ -40,11 +40,10 @@
     align-items: center;
 }
 
-.mod-row p,
-.mod-row-alt p {
-    font-weight: 300;
-    font-size: 1rem;
-    text-align: right;
+.mod-row td p,
+.mod-row-alt td p {
+    font-weight: 400;
+    font-size: 0.95rem;
 }
 
 .mod-row td,

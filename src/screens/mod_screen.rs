@@ -2,7 +2,7 @@ use crate::{components::TitleHeader, interface::mod_types::Mod, AppState};
 use dioxus::prelude::*;
 
 #[component]
-pub fn ModRow(mod_obj: Mod, alt: bool) -> Element {
+pub fn ModRow(mut mod_obj: Mod, alt: bool) -> Element {
     rsx! {
         tr {
             class: if alt { "mod-row-alt" } else { "mod-row" },
@@ -10,6 +10,9 @@ pub fn ModRow(mod_obj: Mod, alt: bool) -> Element {
                 style: "width:7%",
                 input {
                     "type": "checkbox",
+                    class: "mod-checkbox",
+                    checked: mod_obj.checked(),
+                    onclick: move |_| mod_obj.set_checked(!mod_obj.checked())
                 }
             }
             td {
@@ -26,7 +29,9 @@ pub fn ModRow(mod_obj: Mod, alt: bool) -> Element {
             }
             td {
                 style: "width:10%",
-                p { {mod_obj.enabled().to_string()} }
+                p {
+                    {if mod_obj.enabled() { "True" } else { "False" }}
+                }
             }
         }
     }
@@ -35,8 +40,9 @@ pub fn ModRow(mod_obj: Mod, alt: bool) -> Element {
 #[component]
 pub fn ModScreen() -> Element {
     let state: Signal<AppState> = use_context::<Signal<AppState>>();
-    let mods: Vec<Mod> =
+    let mut mods: Vec<Mod> =
         crate::interface::mod_scanner::find_active_mods(state().game_path.as_path());
+    let mut all_checked: Signal<bool> = use_signal(|| false);
 
     let mut alt: bool = true;
     let mod_list = mods.iter().map(|m| {
@@ -64,7 +70,17 @@ pub fn ModScreen() -> Element {
                             style: "width:7%",
                             input {
                                 "type": "checkbox",
-                                style: "display:flex;margin-left:auto;margin-right:auto"
+                                style: "display:flex;margin-left:auto;margin-right:auto",
+                                disabled: false,
+                                onclick: move |_| {
+                                    all_checked.with_mut(|b| *b = !*b);
+                                    mods.iter_mut().for_each(|m| m.set_checked(all_checked()));
+                                    eval(&format!(r#"
+                                        document.querySelectorAll(".mod-checkbox").forEach(box => {{
+                                            box.checked = {};
+                                        }});
+                                    "#, all_checked()));
+                                }
                             }
                         }
                         p { style: "width:40%", "Name" }
