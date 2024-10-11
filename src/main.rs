@@ -18,6 +18,7 @@ use index_screen::IndexScreen;
 use mod_screen::ModScreen;
 use sprout::screens::{import_screen, index_screen, mod_screen};
 use sprout::AppState;
+use sprout::interface::location_manager;
 
 #[derive(Routable, PartialEq, Clone)]
 #[allow(clippy::enum_variant_names)]
@@ -46,8 +47,8 @@ fn main() {
         .with_cfg(
             Config::new()
                 .with_background_color((34, 47, 62, 1))
-                .with_data_directory(get_data_dir().join("data/"))
-                .with_resource_directory(get_data_dir().join("assets/"))
+                .with_data_directory(location_manager::get_data_dir().join("data/"))
+                .with_resource_directory(location_manager::get_data_dir().join("assets/"))
                 .with_disable_context_menu(true)
                 .with_window(
                     WindowBuilder::new()
@@ -70,8 +71,8 @@ fn main() {
         .with_cfg(
             Config::new()
                 .with_background_color((34, 47, 62, 1))
-                .with_data_directory(get_data_dir().join("data/"))
-                .with_resource_directory(get_data_dir().join("assets/"))
+                .with_data_directory(location_manager::get_data_dir().join("data/"))
+                .with_resource_directory(location_manager::get_data_dir().join("assets/"))
                 .with_disable_context_menu(true)
                 .with_window(
                     WindowBuilder::new()
@@ -85,17 +86,3 @@ fn main() {
         .launch(App);
 }
 
-pub fn get_data_dir() -> std::path::PathBuf {
-    let mut path = dirs::data_dir().unwrap_or_else(|| {
-        eprintln!("Unsupported operating system.");
-        std::process::exit(1);
-    });
-    path.push(".svsprout/");
-    if !path.exists() {
-        std::fs::create_dir(&path).unwrap_or_else(|_| {
-            eprintln!("No permission to write to data directory.");
-            std::process::exit(1);
-        });
-    };
-    path
-}
