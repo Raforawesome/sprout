@@ -7,5 +7,5 @@ edition = "2021"
 dioxus = { version = "0.5.1", features = ["desktop", "router"] }
 dirs = "5.0.1"
 json5 = "0.4.1"
-rfd = "0.14.1"
+rfd = "0.15.0"
 serde = { version = "1.0.203", features = ["derive"] }
