@@ -1,6 +1,7 @@
 //! Class/type definition for a struct
 //! which represents a mod on the filesystem.
 
+use dioxus::prelude::*;
 use serde::Deserialize;
 use std::path::{Path, PathBuf};
 
@@ -12,6 +13,7 @@ pub struct Mod {
     version: String,
     min_api_version: String,
     enabled: bool,
+    enabled_signal: Signal<bool>,
     folder: PathBuf,
     checked: bool,
 }
@@ -41,12 +43,17 @@ impl Mod {
     pub fn folder(&self) -> &Path {
         self.folder.as_path()
     }
+
+    pub fn enabled_signal(&self) -> Signal<bool> {
+        self.enabled_signal
+    }
 }
 
 // Setters
 impl Mod {
     pub fn set_enabled(&mut self, enabled: bool) {
         self.enabled = enabled;
+        self.enabled_signal.set(enabled);
     }
 
     pub fn set_checked(&mut self, checked: bool) {

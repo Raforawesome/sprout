@@ -16,9 +16,9 @@ use dioxus::{
 use import_screen::ImportScreen;
 use index_screen::IndexScreen;
 use mod_screen::ModScreen;
+use sprout::interface::location_manager;
 use sprout::screens::{import_screen, index_screen, mod_screen};
 use sprout::AppState;
-use sprout::interface::location_manager;
 
 #[derive(Routable, PartialEq, Clone)]
 #[allow(clippy::enum_variant_names)]
@@ -85,4 +85,3 @@ fn main() {
         )
         .launch(App);
 }
-

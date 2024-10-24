@@ -30,7 +30,7 @@ pub fn ModRow(mut mod_obj: Mod, alt: bool) -> Element {
             td {
                 style: "width:10%",
                 p {
-                    {if mod_obj.enabled() { "True" } else { "False" }}
+                    {if mod_obj.enabled_signal()() { "True" } else { "False" }}
                 }
             }
         }
@@ -40,12 +40,12 @@ pub fn ModRow(mut mod_obj: Mod, alt: bool) -> Element {
 #[component]
 pub fn ModScreen() -> Element {
     let state: Signal<AppState> = use_context::<Signal<AppState>>();
-    let mut mods: Vec<Mod> =
-        crate::interface::mod_scanner::find_active_mods(state().game_path.as_path());
+    let mut mod_signal: Signal<Vec<Mod>> =
+        use_signal(|| crate::interface::mod_scanner::find_active_mods(state().game_path.as_path()));
     let mut all_checked: Signal<bool> = use_signal(|| false);
 
     let mut alt: bool = true;
-    let mod_list = mods.iter().map(|m| {
+    let mod_list = mod_signal.iter().map(|m| {
         alt = !alt;
         rsx! {
             ModRow {
@@ -74,7 +74,9 @@ pub fn ModScreen() -> Element {
                                 disabled: false,
                                 onclick: move |_| {
                                     all_checked.with_mut(|b| *b = !*b);
-                                    mods.iter_mut().for_each(|m| m.set_checked(all_checked()));
+                                    mod_signal.with_mut(|mods| {
+                                        mods.iter_mut().for_each(|m| m.set_checked(all_checked()));
+                                    });
                                     eval(&format!(r#"
                                         document.querySelectorAll(".mod-checkbox").forEach(box => {{
                                             box.checked = {};
@@ -94,7 +96,17 @@ pub fn ModScreen() -> Element {
             div {  // buttons container
                 class: "button-subgrid",
                 button { class: "button mod-action-button", "Enable" }
-                button { class: "button mod-action-button", "Disable" }
+                button {
+                    class: "button mod-action-button",
+                    onclick: move |_| {
+                        mod_signal.with_mut(|mods| {
+                            mods.iter_mut()
+                                .filter(|m| m.checked())
+                                .for_each(|m| m.set_enabled(false));
+                        });
+                    },
+                    "Disable"
+                }
                 span { class: "divider-gap" }
                 button { class: "button mod-action-button", "Find Updates" }
                 button { class: "button mod-action-button", "Export Mods" }
