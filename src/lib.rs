@@ -1,5 +1,3 @@
-#![feature(once_wait)]
-
 pub mod components;
 pub mod interface;
 pub mod screens;

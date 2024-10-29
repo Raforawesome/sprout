@@ -4,6 +4,7 @@
 use dioxus::prelude::*;
 use serde::Deserialize;
 use std::path::{Path, PathBuf};
+use crate::interface::location_manager;
 
 /// Rust native abstraction representing a
 /// mod folder in the Stardew Valley mods directory.
@@ -15,6 +16,8 @@ pub struct Mod {
     enabled: bool,
     enabled_signal: Signal<bool>,
     folder: PathBuf,
+    disabled_folder: PathBuf,
+    enabled_folder: PathBuf,
     checked: bool,
 }
 
@@ -58,7 +61,6 @@ impl Mod {
 
     pub fn set_checked(&mut self, checked: bool) {
         self.checked = checked;
-        // println!("{checked}");
     }
 
     pub fn set_name(&mut self, name: String) {
@@ -74,7 +76,22 @@ impl Mod {
     }
 
     pub fn set_folder(&mut self, folder: PathBuf) {
+        let folder_name = folder.file_name().unwrap().to_str().unwrap();
+        self.disabled_folder = location_manager::disabled_mods_dir().join(folder_name);
+        self.enabled_folder = location_manager::get_mods_path().join(folder_name);
         self.folder = folder;
+    }
+}
+
+impl Mod {
+    pub fn enable(&mut self) -> std::io::Result<()> {
+        self.folder = self.enabled_folder.clone();
+        std::fs::rename(self.disabled_folder.as_path(), self.enabled_folder.as_path())
+    }
+
+    pub fn disable(&mut self) -> std::io::Result<()> {
+        self.folder = self.disabled_folder.clone();
+        std::fs::rename(self.enabled_folder.as_path(), self.disabled_folder.as_path())
     }
 }
 
