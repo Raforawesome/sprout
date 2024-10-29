@@ -9,6 +9,22 @@
 use std::path::{Path, PathBuf};
 use std::sync::LazyLock;
 
+thread_local! {
+    static GAME_PATH: *mut PathBuf = const { std::ptr::null_mut::<PathBuf>() };
+}
+
+pub fn set_game_path(p: PathBuf) {
+    unsafe {
+        GAME_PATH.with(|ptr| **ptr = p)
+    }
+}
+
+pub fn get_game_path() -> &'static Path {
+    unsafe {
+        GAME_PATH.with(|ptr| (*ptr).as_ref().unwrap())
+    }
+}
+
 pub fn sprout_home_dir<'a>() -> &'a Path {
     static HOME_DIR: LazyLock<PathBuf> = LazyLock::new(|| {
         let home: PathBuf = dirs::home_dir().expect("Failed to find home dir!");

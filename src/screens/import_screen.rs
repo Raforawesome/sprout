@@ -2,6 +2,7 @@ use crate::{components::TitleHeader, AppState};
 use dioxus::prelude::*;
 use rfd::FileDialog;
 use std::path::{Path, PathBuf};
+use crate::interface::location_manager;
 
 #[component]
 pub fn ImportScreen() -> Element {
@@ -50,6 +51,7 @@ pub fn ImportScreen() -> Element {
                     let passes: bool = validate_game_path(&state().game_path);
                     hide_error.set(passes);
                     if passes {
+                        location_manager::set_game_path(state().game_path.clone());
                         let nav: Navigator = navigator();
                         nav.replace("/mods");
                     }
