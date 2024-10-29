@@ -11,11 +11,22 @@ use std::sync::LazyLock;
 
 thread_local! {
     static GAME_PATH: *mut PathBuf = const { std::ptr::null_mut::<PathBuf>() };
+    static MODS_PATH: *mut PathBuf = const { std::ptr::null_mut::<PathBuf>() };
 }
 
+#[cfg(not(target_os = "macos"))]
 pub fn set_game_path(p: PathBuf) {
     unsafe {
-        GAME_PATH.with(|ptr| **ptr = p)
+        MODS_PATH.with(|ptr| **ptr = p.join("Mods/"));
+        GAME_PATH.with(|ptr| **ptr = p);
+    }
+}
+
+#[cfg(target_os = "macos")]
+pub fn set_game_path(p: PathBuf) {
+    unsafe {
+        MODS_PATH.with(|ptr| **ptr = p.join("Contents/MacOS/Mods/"));
+        GAME_PATH.with(|ptr| **ptr = p);
     }
 }
 
