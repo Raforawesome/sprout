@@ -1,8 +1,13 @@
+use std::ops::DerefMut;
 use crate::{components::TitleHeader, interface::mod_types::Mod, AppState};
 use dioxus::prelude::*;
 
 #[component]
-pub fn ModRow(mut mod_obj: Mod, alt: bool) -> Element {
+pub fn ModRow(mut mod_ptr: *mut Mod, alt: bool) -> Element {
+    let mut mod_obj: &mut Mod;
+    unsafe {
+        mod_obj = mod_ptr.as_mut().unwrap();
+    }
     rsx! {
         tr {
             class: if alt { "mod-row-alt" } else { "mod-row" },
@@ -45,11 +50,11 @@ pub fn ModScreen() -> Element {
     let mut all_checked: Signal<bool> = use_signal(|| false);
 
     let mut alt: bool = true;
-    let mod_list = mod_signal.iter().map(|m| {
+    let mod_list = mod_signal.iter_mut().map(|mut m| {
         alt = !alt;
         rsx! {
             ModRow {
-                mod_obj: m.clone(),
+                mod_ptr: m.deref_mut(),
                 alt,
             }
         }
@@ -95,7 +100,17 @@ pub fn ModScreen() -> Element {
             }
             div {  // buttons container
                 class: "button-subgrid",
-                button { class: "button mod-action-button", "Enable" }
+                button {
+                    class: "button mod-action-button",
+                    onclick: move |_| {
+                        mod_signal.with_mut(|mods| {
+                            mods.iter_mut()
+                                .filter(|m| m.checked())
+                                .for_each(|m| m.set_enabled(true));
+                        });
+                    },
+                    "Enable"
+                }
                 button {
                     class: "button mod-action-button",
                     onclick: move |_| {
