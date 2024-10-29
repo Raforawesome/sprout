@@ -22,12 +22,13 @@ pub fn find_active_mods(p: &Path) -> Vec<Mod> {
         .filter(|f| f.file_type().is_ok_and(|f| f.is_dir())) // only read folders
         .map(|entry| entry.path().join("manifest.json")) // convert items to file path
         .filter(|path| path.exists()) // filter out non-mod folders
-        .filter_map(|path| std::fs::read_to_string(path).ok()) // Filter out files we can't read
-        .filter_map(|manifest_json| {
+        .filter_map(|path| std::fs::read_to_string(&path).ok().zip(Some(path.parent().unwrap().to_path_buf()))) // Filter out files we can't read
+        .filter_map(|(manifest_json, path)| {
             let manifest: Manifest = json5::from_str(&manifest_json).ok()?;
             let mut mod_struct: Mod = Mod::default();
             mod_struct.set_name(manifest.Name);
             mod_struct.set_version(manifest.Version);
+            mod_struct.set_folder(path);
             if let Some(s) = manifest.MinimumApiVersion {
                 mod_struct.set_min_api(s);
             } else {

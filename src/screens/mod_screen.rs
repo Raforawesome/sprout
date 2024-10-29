@@ -4,7 +4,7 @@ use dioxus::prelude::*;
 
 #[component]
 pub fn ModRow(mut mod_ptr: *mut Mod, alt: bool) -> Element {
-    let mut mod_obj: &mut Mod;
+    let mod_obj: &mut Mod;
     unsafe {
         mod_obj = mod_ptr.as_mut().unwrap();
     }
