@@ -36,6 +36,12 @@ pub fn get_game_path() -> &'static Path {
     }
 }
 
+pub fn get_mods_path() -> &'static Path {
+    unsafe {
+        MODS_PATH.with(|ptr| (*ptr).as_ref().unwrap())
+    }
+}
+
 pub fn sprout_home_dir() -> &'static Path {
     static HOME_DIR: LazyLock<PathBuf> = LazyLock::new(|| {
         let home: PathBuf = dirs::home_dir().expect("Failed to find home dir!");
