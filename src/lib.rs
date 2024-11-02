@@ -1,6 +1,7 @@
 pub mod components;
 pub mod interface;
 pub mod screens;
+pub mod web;
 
 use std::path::PathBuf;
 
