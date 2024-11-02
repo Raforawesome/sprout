@@ -1,1 +1,1 @@
-mod smapi_fetcher;
+pub mod smapi_fetcher;
