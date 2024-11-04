@@ -1,6 +1,7 @@
-use std::ops::DerefMut;
 use crate::{components::TitleHeader, interface::mod_types::Mod, AppState};
 use dioxus::prelude::*;
+use crate::interface::location_manager;
+use std::ops::DerefMut;
 
 #[component]
 pub fn ModRow(mut mod_ptr: *mut Mod, alt: bool) -> Element {
@@ -8,6 +9,7 @@ pub fn ModRow(mut mod_ptr: *mut Mod, alt: bool) -> Element {
     unsafe {
         mod_obj = mod_ptr.as_mut().unwrap();
     }
+    let enabled_signal: Signal<bool> = mod_obj.enabled_signal();
     rsx! {
         tr {
             class: if alt { "mod-row-alt" } else { "mod-row" },
@@ -35,7 +37,8 @@ pub fn ModRow(mut mod_ptr: *mut Mod, alt: bool) -> Element {
             td {
                 style: "width:10%",
                 p {
-                    {if mod_obj.enabled_signal()() { "True" } else { "False" }}
+                    class: {if enabled_signal() { "enabled" } else { "disabled" }},
+                    {if enabled_signal() { "True" } else { "False" }}
                 }
             }
         }
