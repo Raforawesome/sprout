@@ -98,3 +98,11 @@ i {
     -moz-font-feature-settings: "liga";
     -moz-osx-font-smoothing: grayscale;
 }
+
+.disabled {
+    color: #ff7675;
+}
+
+.enabled {
+    color: #55efc4;
+}
