@@ -6,12 +6,18 @@
 // Enabled mods dir (inside game folder)
 // Disabled mods dir (probably in $XDG_CONFIG_HOME/.sprout/disabled)
 
+use std::alloc::{alloc, Layout};
+use std::cell::{LazyCell, UnsafeCell};
 use std::path::{Path, PathBuf};
 use std::sync::LazyLock;
 
 thread_local! {
-    static GAME_PATH: *mut PathBuf = const { std::ptr::null_mut::<PathBuf>() };
-    static MODS_PATH: *mut PathBuf = const { std::ptr::null_mut::<PathBuf>() };
+    static GAME_PATH: LazyCell<*mut PathBuf> = LazyCell::new(|| unsafe {
+        alloc(Layout::new::<PathBuf>()) as *mut PathBuf
+    });
+    static MODS_PATH: LazyCell<*mut PathBuf> = LazyCell::new(|| unsafe {
+        alloc(Layout::new::<PathBuf>()) as *mut PathBuf
+    });
 }
 
 #[cfg(not(target_os = "macos"))]
@@ -25,21 +31,17 @@ pub fn set_game_path(p: PathBuf) {
 #[cfg(target_os = "macos")]
 pub fn set_game_path(p: PathBuf) {
     unsafe {
-        MODS_PATH.with(|ptr| **ptr = p.join("Contents/MacOS/Mods/"));
-        GAME_PATH.with(|ptr| **ptr = p);
+        MODS_PATH.with(|ptr| ***ptr = p.join("Contents/MacOS/Mods/"));
+        GAME_PATH.with(|ptr| ***ptr = p);
     }
 }
 
 pub fn get_game_path() -> &'static Path {
-    unsafe {
-        GAME_PATH.with(|ptr| (*ptr).as_ref().unwrap())
-    }
+    unsafe { GAME_PATH.with(|ptr| ptr.as_ref().unwrap()) }
 }
 
 pub fn get_mods_path() -> &'static Path {
-    unsafe {
-        MODS_PATH.with(|ptr| (*ptr).as_ref().unwrap())
-    }
+    unsafe { MODS_PATH.with(|ptr| ptr.as_ref().unwrap()) }
 }
 
 pub fn sprout_home_dir() -> &'static Path {
