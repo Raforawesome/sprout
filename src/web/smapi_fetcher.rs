@@ -2,11 +2,12 @@
 //! The scope covers both SMAPI the app and the website, however
 //! there are only web-related functions planned so far.
 
-fn get_raw_mod_data() -> reqwest::Result<String> {
+pub fn get_raw_mod_data() -> reqwest::Result<String> {
     let buffer: String = reqwest::blocking::get("https://smapi.io/mods")?.text()?;
 
     let mut lb_count = 0;
-    let raw_data: String = buffer.chars()
+    let raw_data: String = buffer
+        .chars()
         .skip_while(|&c| c != '[')
         .skip(1)
         .take_while(|&c| {

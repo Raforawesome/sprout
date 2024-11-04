@@ -1,10 +1,10 @@
 //! Class/type definition for a struct
 //! which represents a mod on the filesystem.
 
+use crate::interface::location_manager;
 use dioxus::prelude::*;
 use serde::Deserialize;
 use std::path::{Path, PathBuf};
-use crate::interface::location_manager;
 
 /// Rust native abstraction representing a
 /// mod folder in the Stardew Valley mods directory.
@@ -86,12 +86,18 @@ impl Mod {
 impl Mod {
     pub fn enable(&mut self) -> std::io::Result<()> {
         self.folder = self.enabled_folder.clone();
-        std::fs::rename(self.disabled_folder.as_path(), self.enabled_folder.as_path())
+        std::fs::rename(
+            self.disabled_folder.as_path(),
+            self.enabled_folder.as_path(),
+        )
     }
 
     pub fn disable(&mut self) -> std::io::Result<()> {
         self.folder = self.disabled_folder.clone();
-        std::fs::rename(self.enabled_folder.as_path(), self.disabled_folder.as_path())
+        std::fs::rename(
+            self.enabled_folder.as_path(),
+            self.disabled_folder.as_path(),
+        )
     }
 }
 
