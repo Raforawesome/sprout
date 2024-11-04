@@ -46,7 +46,7 @@ pub fn get_mods_path() -> &'static Path {
 
 pub fn sprout_home_dir() -> &'static Path {
     static HOME_DIR: LazyLock<PathBuf> = LazyLock::new(|| {
-        let home: PathBuf = dirs::home_dir().expect("Failed to find home dir!");
+        let home: PathBuf = dirs::data_local_dir().expect("Failed to find home dir!");
         let sprout_dir: PathBuf = home.join(".sprout");
         if !sprout_dir.exists() {
             std::fs::create_dir_all(&sprout_dir).expect("Failed to create sprout dir!");
@@ -67,17 +67,17 @@ pub fn disabled_mods_dir() -> &'static Path {
     DISABLED_DIR.as_path()
 }
 
-pub fn get_data_dir() -> PathBuf {
-    let mut path = dirs::data_dir().unwrap_or_else(|| {
-        eprintln!("Unsupported operating system.");
-        std::process::exit(1);
-    });
-    path.push(".sprout/");
-    if !path.exists() {
-        std::fs::create_dir(&path).unwrap_or_else(|_| {
-            eprintln!("No permission to write to data directory.");
-            std::process::exit(1);
-        });
-    };
-    path
-}
+// pub fn get_data_dir() -> PathBuf {
+//     let mut path = dirs::data_dir().unwrap_or_else(|| {
+//         eprintln!("Unsupported operating system.");
+//         std::process::exit(1);
+//     });
+//     path.push(".sprout/");
+//     if !path.exists() {
+//         std::fs::create_dir(&path).unwrap_or_else(|_| {
+//             eprintln!("No permission to write to data directory.");
+//             std::process::exit(1);
+//         });
+//     };
+//     path
+// }

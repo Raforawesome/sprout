@@ -47,8 +47,6 @@ fn main() {
         .with_cfg(
             Config::new()
                 .with_background_color((34, 47, 62, 1))
-                .with_data_directory(location_manager::get_data_dir().join("data/"))
-                .with_resource_directory(location_manager::get_data_dir().join("assets/"))
                 .with_disable_context_menu(true)
                 .with_window(
                     WindowBuilder::new()
@@ -71,8 +69,6 @@ fn main() {
         .with_cfg(
             Config::new()
                 .with_background_color((34, 47, 62, 1))
-                .with_data_directory(location_manager::get_data_dir().join("data/"))
-                .with_resource_directory(location_manager::get_data_dir().join("assets/"))
                 .with_disable_context_menu(true)
                 .with_window(
                     WindowBuilder::new()
