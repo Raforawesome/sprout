@@ -1,7 +1,7 @@
 [application]
 
 # dioxus project name
-name = "sprout"
+name = "Sprout"
 
 # default platfrom
 # you can also use `dx serve/build --platform XXX` to use other platform
@@ -57,7 +57,7 @@ identifier = "io.github.sprout"
 publisher = "sprout"
 
 # Bundle icon
-icon = ["./public/sprout@1x.png"]
+icon = ["./public/icon.icns"]
 
 # Bundle resources
 resources = ["public/*"]
