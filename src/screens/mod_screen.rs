@@ -1,6 +1,6 @@
+use crate::interface::location_manager;
 use crate::{components::TitleHeader, interface::mod_types::Mod, AppState};
 use dioxus::prelude::*;
-use crate::interface::location_manager;
 use std::ops::DerefMut;
 
 #[component]
@@ -109,7 +109,10 @@ pub fn ModScreen() -> Element {
                         mod_signal.with_mut(|mods| {
                             mods.iter_mut()
                                 .filter(|m| m.checked())
-                                .for_each(|m| m.set_enabled(true));
+                                .for_each(|m| {
+                                    m.set_enabled(true);
+                                    let _ = m.enable();
+                                });
                         });
                     },
                     "Enable"
@@ -120,7 +123,10 @@ pub fn ModScreen() -> Element {
                         mod_signal.with_mut(|mods| {
                             mods.iter_mut()
                                 .filter(|m| m.checked())
-                                .for_each(|m| m.set_enabled(false));
+                                .for_each(|m| {
+                                    m.set_enabled(false);
+                                    let _ = m.disable();
+                                });
                         });
                     },
                     "Disable"
