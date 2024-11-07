@@ -31,14 +31,14 @@ pub fn ModRow(mut mod_ptr: *mut Mod, alt: bool) -> Element {
                 p { {mod_obj.version()} }
             }
             td {
-                style: "width:18%",
+                style: "width:17%",
                 p { {mod_obj.min_api_version()} }
             }
             td {
                 style: "width:10%",
                 p {
                     class: {if enabled_signal() { "enabled" } else { "disabled" }},
-                    {if enabled_signal() { "True" } else { "False" }}
+                    {if enabled_signal() { "Enabled" } else { "Disabled" }}
                 }
             }
         }
@@ -95,8 +95,8 @@ pub fn ModScreen() -> Element {
                         }
                         p { style: "width:40%", "Name" }
                         p { style: "width:21%", "Version" }
-                        p { style: "width:18%", "Min API Ver." }
-                        p { style: "width:10%", "Enabled" }
+                        p { style: "width:17%", "Min API Ver." }
+                        p { style: "width:10%", "Status" }
                     }
                     {mod_list}
                 }
