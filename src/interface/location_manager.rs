@@ -7,7 +7,7 @@
 // Disabled mods dir (probably in $XDG_CONFIG_HOME/.sprout/disabled)
 
 use std::alloc::{alloc, Layout};
-use std::cell::{LazyCell, UnsafeCell};
+use std::cell::LazyCell;
 use std::path::{Path, PathBuf};
 use std::sync::LazyLock;
 
@@ -23,8 +23,8 @@ thread_local! {
 #[cfg(not(target_os = "macos"))]
 pub fn set_game_path(p: PathBuf) {
     unsafe {
-        MODS_PATH.with(|ptr| **ptr = p.join("Mods/"));
-        GAME_PATH.with(|ptr| **ptr = p);
+        MODS_PATH.with(|ptr| ***ptr = p.join("Mods/"));
+        GAME_PATH.with(|ptr| ***ptr = p);
     }
 }
 

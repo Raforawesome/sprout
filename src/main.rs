@@ -3,7 +3,7 @@
 //! <h5>A Stardew Valley Mod Manager</h5>
 //! <hr>
 //! Sprout is a simple SMAPI mod manager for Stardew Valley.
-//! Currently caching is not implemented, and it works on a simple
+//! Currently, caching is not implemented, and it works on a simple
 //! no-DB file-scan system.
 
 #[cfg(target_os = "macos")]
