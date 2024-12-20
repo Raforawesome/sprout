@@ -57,7 +57,16 @@ identifier = "io.github.sprout"
 publisher = "sprout"
 
 # Bundle icon
-icon = ["./public/icon.icns"]
+icon = [
+    "public/icon.iconset/*",
+    "public/icon.icns",
+    "public/icon.ico",
+    "public/sprout@1x-square.png",
+    "/icon.iconset/*",
+    "/icon.icns",
+    "/icon.ico",
+    "/sprout@1x-square.png"
+]
 
 # Bundle resources
 resources = ["public/*"]
