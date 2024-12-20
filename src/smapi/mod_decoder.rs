@@ -33,6 +33,7 @@ enum CompatStatus {
     Workaround,
     Broken,
     Abandoned,
+    Obsolete,
 }
 
 #[derive(Deserialize, Debug)]

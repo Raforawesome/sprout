@@ -58,13 +58,7 @@ mod tests {
         let arrays: Vec<&str> = split_raw_arrays(&result);
         let mods: Vec<ModListing> = arrays
             .iter()
-            .filter_map(|s| {
-                let res: Option<ModListing> = json5::from_str(s).ok();
-                if res.is_none() {
-                    println!("Failed ModListing parsing for array: {}\n------\n", s);
-                }
-                res
-            })
+            .map(|s| json5::from_str(s).expect("Failed to parse mod!"))
             .collect();
 
         dbg!(&mods[0]);
