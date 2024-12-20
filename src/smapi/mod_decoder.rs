@@ -20,16 +20,18 @@ pub struct ModListing {
 pub struct CompatInfo {
     status: CompatStatus,
     summary: String,
-    broke_in: String,
+    broke_in: Option<String>,
     unofficial_version: Option<AltVersion>,
 }
 
 #[derive(Deserialize, Debug)]
 #[serde(rename_all = "lowercase")]
 enum CompatStatus {
-    Unofficial,
     Ok,
+    Unofficial,
     Workaround,
+    Broken,
+    Abandoned,
 }
 
 #[derive(Deserialize, Debug)]
