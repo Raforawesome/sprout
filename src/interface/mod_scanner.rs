@@ -1,11 +1,12 @@
+//! # Mod Scanner
 //! Module to scan the filesystem for
-//! SMAPI mods and create Mod objects from them
+//! SMAPI mods and create Mod objects from them.
 
 use super::mod_types::{Manifest, Mod};
 use json5;
 use std::path::{Path, PathBuf};
 
-/// # Scanner system
+/// ## Scanning active mods
 /// This function scans the provided game directory
 /// for mod folders containing a manifest.json, then
 /// uses that information to create a [Vec] of [Mod] objects.

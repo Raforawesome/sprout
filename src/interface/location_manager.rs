@@ -7,7 +7,7 @@
 // Disabled mods dir (probably in $XDG_CONFIG_HOME/.sprout/disabled)
 
 use std::alloc::{alloc, Layout};
-use std::cell::{LazyCell, UnsafeCell};
+use std::cell::LazyCell;
 use std::path::{Path, PathBuf};
 use std::sync::LazyLock;
 

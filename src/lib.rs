@@ -1,7 +1,7 @@
 pub mod components;
 pub mod interface;
 pub mod screens;
-pub mod web;
+pub mod smapi;
 
 use std::path::PathBuf;
 
@@ -29,13 +29,44 @@ mod tests {
 
     #[test]
     fn test_get_raw_mod_data() {
-        use crate::web::smapi_fetcher::get_raw_mod_data;
-        let result = get_raw_mod_data();
+        use crate::smapi::fetcher::get_raw_mod_list;
+        let result = get_raw_mod_list();
         assert!(result.is_ok());
 
         let data = result.unwrap();
-        // assert!(data.starts_with('['));
-        // assert!(data.ends_with(']'));
-        println!("{data}");
+        // println!("{data}");
+        println!("{}", &data[0..1000]);
+    }
+
+    #[test]
+    fn test_split_raw_arrays() {
+        use crate::smapi::fetcher::get_raw_mod_list;
+        use crate::smapi::mod_decoder::split_raw_arrays;
+
+        let result: String = get_raw_mod_list().unwrap();
+        let arrays: Vec<&str> = split_raw_arrays(&result);
+
+        println!("{}", arrays[0]);
+    }
+
+    #[test]
+    fn test_decode_all_mods() {
+        use crate::smapi::fetcher::get_raw_mod_list;
+        use crate::smapi::mod_decoder::{split_raw_arrays, ModListing};
+
+        let result: String = get_raw_mod_list().unwrap();
+        let arrays: Vec<&str> = split_raw_arrays(&result);
+        let mods: Vec<ModListing> = arrays
+            .iter()
+            .filter_map(|s| {
+                let res: Option<ModListing> = json5::from_str(s).ok();
+                if res.is_none() {
+                    println!("Failed ModListing parsing for array: {}\n------\n", s);
+                }
+                res
+            })
+            .collect();
+
+        dbg!(&mods[0]);
     }
 }
