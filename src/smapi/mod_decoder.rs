@@ -7,6 +7,7 @@ use serde::Deserialize;
 pub struct ModListing {
     name: String,
     author: String,
+    #[serde(alias = "GitHubRepo")]
     github_repo: Option<String>,
     source_url: Option<String>,
     compatibility: Option<CompatInfo>,
