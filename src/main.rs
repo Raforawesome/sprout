@@ -109,3 +109,8 @@ fn launch() {
         )
         .launch(App);
 }
+
+#[cfg(not(any(target_os = "macos", target_os = "windows", target_os = "linux")))]
+fn launch() {
+    eprintln!("Unsupported operating system.");
+}
