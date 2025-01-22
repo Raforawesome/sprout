@@ -41,14 +41,17 @@ fn App() -> Element {
     }
 }
 
-#[cfg(target_os = "macos")]
 fn main() {
     // Force mod listings to be fetched on another thread as they take
     // time to parse, and shouldn't be generated on-the-fly when required.
     let _ = std::thread::spawn(|| {
         let _: std::sync::Arc<Vec<_>> = sprout::smapi::fetcher::MOD_LISTINGS.clone();
     });
+    launch();
+}
 
+#[cfg(target_os = "macos")]
+fn launch() {
     LaunchBuilder::desktop()
         .with_cfg(
             Config::new()
@@ -70,13 +73,7 @@ fn main() {
 }
 
 #[cfg(target_os = "linux")]
-fn main() {
-    // Force mod listings to be fetched on another thread as they take
-    // time to parse, and shouldn't be generated on-the-fly when required.
-    let _ = std::thread::spawn(|| {
-        let _: std::sync::Arc<Vec<_>> = sprout::smapi::fetcher::MOD_LISTINGS.clone();
-    });
-
+fn launch() {
     LaunchBuilder::desktop()
         .with_cfg(
             Config::new()
@@ -95,13 +92,7 @@ fn main() {
 }
 
 #[cfg(target_os = "windows")]
-fn main() {
-    // Force mod listings to be fetched on another thread as they take
-    // time to parse, and shouldn't be generated on-the-fly when required.
-    let _ = std::thread::spawn(|| {
-        let _: std::sync::Arc<Vec<_>> = sprout::smapi::fetcher::MOD_LISTINGS.clone();
-    });
-
+fn launch() {
     LaunchBuilder::desktop()
         .with_cfg(
             Config::new()
