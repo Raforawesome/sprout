@@ -4,5 +4,5 @@ use dioxus::prelude::*;
 pub fn IndexScreen() -> Element {
     let nav: Navigator = navigator();
     nav.replace("/import");
-    None
+    VNode::empty()
 }
