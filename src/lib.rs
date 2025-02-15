@@ -1,6 +1,6 @@
 pub mod components;
 pub mod interface;
-pub mod screens;
+pub mod views;
 pub mod smapi;
 
 use std::path::PathBuf;

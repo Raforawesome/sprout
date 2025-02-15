@@ -11,13 +11,14 @@ use dioxus::desktop::tao::platform::macos::WindowBuilderExtMacOS;
 
 use dioxus::{
     desktop::{tao::window::Theme, Config, LogicalSize, WindowBuilder},
+    document::Link,
     prelude::*,
 };
-use import_screen::ImportScreen;
-use index_screen::IndexScreen;
+use import::ImportScreen;
+use index::IndexScreen;
 use mod_screen::ModScreen;
 use sprout::interface::location_manager;
-use sprout::screens::{import_screen, index_screen, mod_screen};
+use sprout::views::{import, index, mod_screen};
 use sprout::AppState;
 
 #[derive(Routable, PartialEq, Clone)]
@@ -36,7 +37,7 @@ fn App() -> Element {
     let _state: Signal<AppState> = use_context_provider(|| Signal::new(AppState::default()));
 
     rsx! {
-        style { {include_str!("../public/global.css")} }
+        Link { rel: "stylesheet", href: asset!("public/global.css") }
         Router::<Routes> {}
     }
 }

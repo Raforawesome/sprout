@@ -3,6 +3,7 @@ use crate::{components::TitleHeader, AppState};
 use dioxus::prelude::*;
 use rfd::FileDialog;
 use std::path::{Path, PathBuf};
+use dioxus::document::Link;
 
 #[component]
 pub fn ImportScreen() -> Element {
@@ -12,6 +13,7 @@ pub fn ImportScreen() -> Element {
     rsx! {
         TitleHeader { sub_title: "Import".to_string() }
         style { {include_str!("../css/import_screen.css")} }
+        // Link { rel: "stylesheet", href: asset!("src/css/import_screen.css") }
         div {
             id: "import",
             class: "import",

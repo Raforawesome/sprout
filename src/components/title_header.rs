@@ -1,10 +1,11 @@
 use dioxus::desktop::window;
 use dioxus::prelude::*;
+use dioxus::document::Link;
 
 #[component]
 pub fn TitleHeader(sub_title: String) -> Element {
     rsx! {
-        style { {include_str!("css/title_header.css")} }
+        Link { rel: "stylesheet", href: asset!("src/components/css/title_header.css") }
         div {
             class: "title-buttons",
             button {
