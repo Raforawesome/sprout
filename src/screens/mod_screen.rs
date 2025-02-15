@@ -1,4 +1,3 @@
-use crate::interface::location_manager;
 use crate::{components::TitleHeader, interface::mod_types::Mod, AppState};
 use dioxus::prelude::*;
 use std::ops::DerefMut;
@@ -23,11 +22,11 @@ pub fn ModRow(mut mod_ptr: *mut Mod, alt: bool) -> Element {
                 }
             }
             td {
-                style: "width:40%",
+                style: "width:44%",
                 p { {mod_obj.name()} }
             }
             td {
-                style: "width:21%",
+                style: "width:17%",
                 p { {mod_obj.version()} }
             }
             td {
@@ -37,7 +36,7 @@ pub fn ModRow(mut mod_ptr: *mut Mod, alt: bool) -> Element {
             td {
                 style: "width:10%",
                 p {
-                    class: {if enabled_signal() { "enabled" } else { "disabled" }},
+                    class: if enabled_signal() { "enabled" } else { "disabled" },
                     {if enabled_signal() { "Enabled" } else { "Disabled" }}
                 }
             }
@@ -85,7 +84,7 @@ pub fn ModScreen() -> Element {
                                     mod_signal.with_mut(|mods| {
                                         mods.iter_mut().for_each(|m| m.set_checked(all_checked()));
                                     });
-                                    eval(&format!(r#"
+                                    document::eval(&format!(r#"
                                         document.querySelectorAll(".mod-checkbox").forEach(box => {{
                                             box.checked = {};
                                         }});
@@ -93,8 +92,8 @@ pub fn ModScreen() -> Element {
                                 }
                             }
                         }
-                        p { style: "width:40%", "Name" }
-                        p { style: "width:21%", "Version" }
+                        p { style: "width:44%", "Name" }
+                        p { style: "width:17%", "Version" }
                         p { style: "width:17%", "Min API Ver." }
                         p { style: "width:10%", "Status" }
                     }
