@@ -3,7 +3,6 @@ use crate::{components::TitleHeader, AppState};
 use dioxus::prelude::*;
 use rfd::FileDialog;
 use std::path::{Path, PathBuf};
-use dioxus::document::Link;
 
 #[component]
 pub fn ImportScreen() -> Element {

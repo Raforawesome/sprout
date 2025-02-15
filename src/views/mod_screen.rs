@@ -48,7 +48,7 @@ pub fn ModRow(mut mod_ptr: *mut Mod, alt: bool) -> Element {
 pub fn ModScreen() -> Element {
     let state: Signal<AppState> = use_context::<Signal<AppState>>();
     let mut mod_signal: Signal<Vec<Mod>> =
-        use_signal(|| crate::interface::mod_scanner::find_active_mods(state().game_path.as_path()));
+        use_signal(|| crate::interface::mod_scanner::find_all_mods(state().game_path.as_path()));
     let mut all_checked: Signal<bool> = use_signal(|| false);
 
     let mut alt: bool = true;
