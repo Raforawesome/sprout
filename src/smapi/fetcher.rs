@@ -2,6 +2,34 @@
 //! The scope covers both SMAPI the app and the website, however
 //! there are only web-related functions planned so far.
 
+use std::sync::{Arc, LazyLock};
+
+use super::mod_decoder::{split_raw_arrays, ModListing};
+
+pub static MOD_LISTINGS: LazyLock<Arc<Vec<ModListing>>> = LazyLock::new(|| {
+    let raw_contents: String = get_raw_mod_list().expect("Failed to make web request!");
+    let raw_list: Vec<&str> = split_raw_arrays(&raw_contents);
+    Arc::new(
+        raw_list
+            .iter()
+            .map(|s| json5::from_str(s).expect("Failed to parse mod!"))
+            .collect(),
+    )
+});
+
+pub fn get_listings_cached() -> Arc<Vec<ModListing>> {
+    MOD_LISTINGS.clone()
+}
+
+pub fn get_all_mod_listings() -> Vec<ModListing> {
+    let raw_contents: String = get_raw_mod_list().expect("Failed to make web request!");
+    let raw_list: Vec<&str> = split_raw_arrays(&raw_contents);
+    raw_list
+        .iter()
+        .map(|s| json5::from_str(s).expect("Failed to parse mod!"))
+        .collect()
+}
+
 pub fn get_raw_mod_list() -> reqwest::Result<String> {
     let buffer: String = reqwest::blocking::get("https://smapi.io/mods")?.text()?;
 

@@ -61,6 +61,6 @@ mod tests {
             .map(|s| json5::from_str(s).expect("Failed to parse mod!"))
             .collect();
 
-        dbg!(&mods[0]);
+        dbg!(&mods[11]);
     }
 }

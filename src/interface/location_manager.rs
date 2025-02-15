@@ -23,8 +23,8 @@ thread_local! {
 #[cfg(not(target_os = "macos"))]
 pub fn set_game_path(p: PathBuf) {
     unsafe {
-        MODS_PATH.with(|ptr| **ptr = p.join("Mods/"));
-        GAME_PATH.with(|ptr| **ptr = p);
+        MODS_PATH.with(|ptr| ***ptr = p.join("Mods/"));
+        GAME_PATH.with(|ptr| ***ptr = p);
     }
 }
 
