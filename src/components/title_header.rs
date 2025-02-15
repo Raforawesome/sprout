@@ -24,7 +24,7 @@ pub fn TitleHeader(sub_title: String) -> Element {
             onmousedown: |_| window().drag(),
             id: "title-header",
             class: "title-header",
-            img { class: "sprout-icon", src: "/sprout@1x-opt.webp" },
+            img { class: "sprout-icon", src: asset!("public/sprout@1x-opt.webp") },
             h1 { class: "title", "Sprout" },
             h1 { class: "subtitle", "|" },
             h1 { class: "subtitle", "{sub_title}" }
