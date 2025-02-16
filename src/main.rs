@@ -6,11 +6,7 @@
 //! Currently caching is not implemented, and it works on a simple
 //! no-DB file-scan system.
 
-#[cfg(target_os = "macos")]
-use dioxus::desktop::tao::platform::macos::WindowBuilderExtMacOS;
-
 use dioxus::{
-    desktop::{tao::window::Theme, Config, LogicalSize, WindowBuilder},
     document::Link,
     prelude::*,
 };
@@ -50,62 +46,11 @@ fn main() {
     launch();
 }
 
-#[cfg(target_os = "macos")]
+#[cfg(any(target_os = "macos", target_os = "windows", target_os = "linux"))]
 fn launch() {
     LaunchBuilder::desktop()
         .with_cfg(
-            Config::new()
-                .with_background_color((34, 47, 62, 1))
-                .with_disable_context_menu(true)
-                .with_window(
-                    WindowBuilder::new()
-                        .with_theme(Some(Theme::Dark))
-                        .with_title("Sprout")
-                        .with_fullsize_content_view(true)
-                        .with_title_hidden(true)
-                        .with_titlebar_transparent(true)
-                        .with_titlebar_buttons_hidden(true)
-                        .with_inner_size(LogicalSize::new(1000, 685))
-                        .with_resizable(false),
-                ),
-        )
-        .launch(App);
-}
-
-#[cfg(target_os = "linux")]
-fn launch() {
-    LaunchBuilder::desktop()
-        .with_cfg(
-            Config::new()
-                .with_background_color((34, 47, 62, 1))
-                .with_disable_context_menu(true)
-                .with_window(
-                    WindowBuilder::new()
-                        .with_theme(Some(Theme::Dark))
-                        .with_title("Sprout")
-                        .with_decorations(false)
-                        .with_inner_size(LogicalSize::new(1000, 685))
-                        .with_resizable(false),
-                ),
-        )
-        .launch(App);
-}
-
-#[cfg(target_os = "windows")]
-fn launch() {
-    LaunchBuilder::desktop()
-        .with_cfg(
-            Config::new()
-                .with_background_color((34, 47, 62, 1))
-                .with_disable_context_menu(true)
-                .with_window(
-                    WindowBuilder::new()
-                        .with_theme(Some(Theme::Dark))
-                        .with_title("Sprout")
-                        .with_inner_size(LogicalSize::new(1000, 685))
-                        .with_resizable(false)
-                        .with_decorations(false),
-                ),
+            sprout::launch_config()
         )
         .launch(App);
 }
