@@ -1,4 +1,6 @@
+use crate::views::update_mods::UpdateScreen;
 use crate::{components::TitleHeader, interface::mod_types::Mod, AppState};
+use dioxus::desktop::{window, LogicalSize};
 use dioxus::prelude::*;
 use std::ops::DerefMut;
 
@@ -131,7 +133,21 @@ pub fn ModScreen() -> Element {
                     "Disable"
                 }
                 span { class: "divider-gap" }
-                button { class: "button mod-action-button", "Find Updates" }
+                button {
+                    class: "button mod-action-button",
+                    onclick: move |_| {
+                        window().new_window(
+                            VirtualDom::new(UpdateScreen),
+                            dioxus::desktop::Config::new().with_disable_context_menu(true).with_window(
+                                dioxus::desktop::WindowBuilder::new()
+                                    // .with_title("Sprout Updater")
+                                    .with_inner_size(LogicalSize::new(1000, 685))
+                                    .with_resizable(false)
+                                    .with_decorations(false))
+                        );
+                    },
+                    "Find Updates"
+                }
                 button { class: "button mod-action-button", "Export Mods" }
             }
         }
