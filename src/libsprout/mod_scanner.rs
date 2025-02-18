@@ -5,7 +5,7 @@
 use super::mod_types::{Manifest, Mod};
 use json5;
 use std::path::{Path, PathBuf};
-use crate::interface::location_manager::disabled_mods_dir;
+use crate::libsprout::path_manager::disabled_mods_dir;
 
 /// ## Scanning active mods
 /// This function scans the provided game directory

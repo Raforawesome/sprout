@@ -40,8 +40,8 @@ pub fn get_game_path() -> &'static Path {
     unsafe { GAME_PATH.with(|ptr| ptr.as_ref().unwrap()) }
 }
 
-pub fn get_mods_path() -> &'static Path {
-    unsafe { MODS_PATH.with(|ptr| ptr.as_ref().unwrap()) }
+pub fn get_mods_path() -> &'static Path { 
+    MODS_PATH.with(|ptr| unsafe { ptr.as_ref().unwrap() })
 }
 
 pub fn sprout_home_dir() -> &'static Path {

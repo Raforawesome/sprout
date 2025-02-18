@@ -1,7 +1,7 @@
 //! Class/type definition for a struct
 //! which represents a mod on the filesystem.
 
-use crate::interface::location_manager;
+use crate::libsprout::path_manager;
 use dioxus::prelude::*;
 use serde::Deserialize;
 use std::path::{Path, PathBuf};
@@ -77,8 +77,8 @@ impl Mod {
 
     pub fn set_folder(&mut self, folder: PathBuf) {
         let folder_name = folder.file_name().unwrap().to_str().unwrap();
-        self.disabled_folder = location_manager::disabled_mods_dir().join(folder_name);
-        self.enabled_folder = location_manager::get_mods_path().join(folder_name);
+        self.disabled_folder = path_manager::disabled_mods_dir().join(folder_name);
+        self.enabled_folder = path_manager::get_mods_path().join(folder_name);
         self.folder = folder;
     }
 }
