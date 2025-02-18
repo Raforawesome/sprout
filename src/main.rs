@@ -32,6 +32,8 @@ fn App() -> Element {
     let _state: Signal<AppState> = use_context_provider(|| Signal::new(AppState::default()));
 
     rsx! {
+        Link { href: asset!("public/inter.css"), rel: "stylesheet" }
+ 
         Link { rel: "stylesheet", href: asset!("public/global.css") }
         Router::<Routes> {}
     }
@@ -41,7 +43,7 @@ fn main() {
     // Force mod listings to be fetched on another thread as they take
     // time to parse, and shouldn't be generated on-the-fly when required.
     let _ = std::thread::spawn(|| {
-        let _: std::sync::Arc<Vec<_>> = sprout::smapi::fetcher::MOD_LISTINGS.clone();
+        let _: std::sync::Arc<Vec<_>> = sprout::libsprout::smapi::fetcher::MOD_LISTINGS.clone();
     });
     launch();
 }
