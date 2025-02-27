@@ -1,10 +1,10 @@
 pub mod components;
-pub mod interface;
+pub mod libsprout;
 pub mod views;
-pub mod smapi;
 
 use std::path::PathBuf;
-use dioxus::desktop::{Config, WindowBuilder, tao::window::Theme, LogicalSize};
+use dioxus::desktop::{tao::window::Theme, Config, LogicalSize, WindowBuilder};
+pub use libsprout::{path_manager, mod_scanner, mod_types, smapi};
 
 #[derive(Debug, Clone, Default)]
 pub struct AppState {
@@ -94,8 +94,8 @@ mod tests {
 
     #[test]
     fn test_split_raw_arrays() {
-        use crate::smapi::fetcher::get_raw_mod_list;
-        use crate::smapi::mod_decoder::split_raw_arrays;
+        use crate::libsprout::smapi::fetcher::get_raw_mod_list;
+        use crate::libsprout::smapi::mod_decoder::split_raw_arrays;
 
         let result: String = get_raw_mod_list().unwrap();
         let arrays: Vec<&str> = split_raw_arrays(&result);
@@ -105,8 +105,8 @@ mod tests {
 
     #[test]
     fn test_decode_all_mods() {
-        use crate::smapi::fetcher::get_raw_mod_list;
-        use crate::smapi::mod_decoder::{split_raw_arrays, ModListing};
+        use crate::libsprout::smapi::fetcher::get_raw_mod_list;
+        use crate::libsprout::smapi::mod_decoder::{split_raw_arrays, ModListing};
 
         let result: String = get_raw_mod_list().unwrap();
         let arrays: Vec<&str> = split_raw_arrays(&result);
@@ -116,5 +116,15 @@ mod tests {
             .collect();
 
         dbg!(&mods[11]);
+    }
+
+    #[test]
+    fn test_mod_read() {
+        let app_state = AppState {
+            game_path: PathBuf::from("/Users/tahirchaudhry/Library/Application Support/Steam/steamapps/common/Stardew Valley"),
+        };
+        let _ = dbg!(std::fs::read_dir(&app_state.game_path).unwrap());
+        let local_mods = mod_scanner::find_active_mods(&app_state.game_path);
+        dbg!(local_mods);
     }
 }

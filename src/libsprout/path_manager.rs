@@ -6,7 +6,7 @@
 // Enabled mods dir (inside game folder)
 // Disabled mods dir (probably in $XDG_CONFIG_HOME/.sprout/disabled)
 
-use std::alloc::{alloc, Layout};
+use std::alloc::{Layout, alloc};
 use std::cell::LazyCell;
 use std::path::{Path, PathBuf};
 use std::sync::LazyLock;
@@ -40,7 +40,7 @@ pub fn get_game_path() -> &'static Path {
     unsafe { GAME_PATH.with(|ptr| ptr.as_ref().unwrap()) }
 }
 
-pub fn get_mods_path() -> &'static Path { 
+pub fn get_mods_path() -> &'static Path {
     MODS_PATH.with(|ptr| unsafe { ptr.as_ref().unwrap() })
 }
 

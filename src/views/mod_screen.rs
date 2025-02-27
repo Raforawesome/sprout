@@ -1,6 +1,6 @@
 use crate::views::update_mods::UpdateScreen;
-use crate::{components::TitleHeader, interface::mod_types::Mod, AppState};
-use dioxus::desktop::{window, LogicalSize};
+use crate::{components::TitleHeader, mod_types::Mod, AppState};
+use dioxus::desktop::window;
 use dioxus::prelude::*;
 use std::ops::DerefMut;
 
@@ -50,7 +50,7 @@ pub fn ModRow(mut mod_ptr: *mut Mod, alt: bool) -> Element {
 pub fn ModScreen() -> Element {
     let state: Signal<AppState> = use_context::<Signal<AppState>>();
     let mut mod_signal: Signal<Vec<Mod>> =
-        use_signal(|| crate::interface::mod_scanner::find_all_mods(state().game_path.as_path()));
+        use_signal(|| crate::mod_scanner::find_all_mods(state().game_path.as_path()));
     let mut all_checked: Signal<bool> = use_signal(|| false);
 
     let mut alt: bool = true;
@@ -138,12 +138,7 @@ pub fn ModScreen() -> Element {
                     onclick: move |_| {
                         window().new_window(
                             VirtualDom::new(UpdateScreen),
-                            dioxus::desktop::Config::new().with_disable_context_menu(true).with_window(
-                                dioxus::desktop::WindowBuilder::new()
-                                    // .with_title("Sprout Updater")
-                                    .with_inner_size(LogicalSize::new(1000, 685))
-                                    .with_resizable(false)
-                                    .with_decorations(false))
+                            crate::launch_config()
                         );
                     },
                     "Find Updates"
