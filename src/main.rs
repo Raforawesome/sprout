@@ -6,15 +6,15 @@
 //! Currently caching is not implemented, and it works on a simple
 //! no-DB file-scan system.
 
-use dioxus::{
-    document::Link,
-    prelude::*,
-};
+use std::{sync, thread};
+
+use dioxus::document::Stylesheet;
+use dioxus::prelude::*;
 use import::ImportScreen;
 use index::IndexScreen;
 use mod_screen::ModScreen;
 use sprout::views::{import, index, mod_screen};
-use sprout::AppState;
+use sprout::{AppState, libsprout};
 
 #[derive(Routable, PartialEq, Clone)]
 #[allow(clippy::enum_variant_names)]
@@ -32,9 +32,7 @@ fn App() -> Element {
     let _state: Signal<AppState> = use_context_provider(|| Signal::new(AppState::default()));
 
     rsx! {
-        Link { href: asset!("public/inter.css"), rel: "stylesheet" }
- 
-        Link { rel: "stylesheet", href: asset!("public/global.css") }
+        Stylesheet { href: asset!("public/global.css") }
         Router::<Routes> {}
     }
 }
@@ -42,8 +40,8 @@ fn App() -> Element {
 fn main() {
     // Force mod listings to be fetched on another thread as they take
     // time to parse, and shouldn't be generated on-the-fly when required.
-    let _ = std::thread::spawn(|| {
-        let _: std::sync::Arc<Vec<_>> = sprout::libsprout::smapi::fetcher::MOD_LISTINGS.clone();
+    let _ = thread::spawn(|| {
+        sync::LazyLock::force(&libsprout::smapi::fetcher::MOD_LISTINGS);
     });
     launch();
 }
@@ -51,9 +49,7 @@ fn main() {
 #[cfg(any(target_os = "macos", target_os = "windows", target_os = "linux"))]
 fn launch() {
     LaunchBuilder::desktop()
-        .with_cfg(
-            sprout::launch_config()
-        )
+        .with_cfg(sprout::launch_config())
         .launch(App);
 }
 
