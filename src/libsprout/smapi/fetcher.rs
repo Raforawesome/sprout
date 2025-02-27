@@ -4,7 +4,9 @@
 
 use std::sync::{Arc, LazyLock};
 
-use super::mod_decoder::{split_raw_arrays, ModListing};
+use dioxus::logger::tracing::{debug, warn};
+
+use super::mod_decoder::{ModListing, split_raw_arrays};
 
 pub static MOD_LISTINGS: LazyLock<Arc<Vec<ModListing>>> = LazyLock::new(|| {
     let raw_contents: String = get_raw_mod_list().expect("Failed to make web request!");
@@ -12,7 +14,16 @@ pub static MOD_LISTINGS: LazyLock<Arc<Vec<ModListing>>> = LazyLock::new(|| {
     Arc::new(
         raw_list
             .iter()
-            .map(|s| json5::from_str(s).expect("Failed to parse mod!"))
+            .filter_map(|s| match json5::from_str::<ModListing>(s) {
+                Ok(m) => {
+                    debug!(?m.name, "Loaded mod");
+                    Some(m)
+                }
+                Err(e) => {
+                    warn!(?s, ?e, "Failed to parse mod!");
+                    None
+                }
+            })
             .collect(),
     )
 });

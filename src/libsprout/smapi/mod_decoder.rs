@@ -5,29 +5,28 @@ use serde::Deserialize;
 #[derive(Deserialize, Debug)]
 #[serde(rename_all = "PascalCase")]
 pub struct ModListing {
-    name: String,
-    author: String,
+    pub name: String,
+    pub author: String,
     #[serde(alias = "GitHubRepo")]
-    github_repo: Option<String>,
-    source_url: Option<String>,
-    compatibility: Option<CompatInfo>,
-    mod_pages: Vec<AltVersion>,
-    warnings: Vec<String>,
-    mod_page_sites: Vec<String>,
+    pub github_repo: Option<String>,
+    pub source_url: Option<String>,
+    pub compatibility: Option<CompatInfo>,
+    pub mod_pages: Vec<AltVersion>,
+    pub warnings: Vec<String>,
 }
 
 #[derive(Deserialize, Debug)]
 #[serde(rename_all = "PascalCase")]
 pub struct CompatInfo {
-    status: CompatStatus,
-    summary: String,
-    broke_in: Option<String>,
-    unofficial_version: Option<AltVersion>,
+    pub status: CompatStatus,
+    pub summary: String,
+    pub broke_in: Option<String>,
+    pub unofficial_version: Option<AltVersion>,
 }
 
 #[derive(Deserialize, Debug)]
 #[serde(rename_all = "lowercase")]
-enum CompatStatus {
+pub enum CompatStatus {
     Ok,
     Unofficial,
     Workaround,
@@ -39,8 +38,8 @@ enum CompatStatus {
 #[derive(Deserialize, Debug)]
 #[serde(rename_all = "PascalCase")]
 pub struct AltVersion {
-    url: String,
-    text: String,
+    pub url: String,
+    pub text: String,
 }
 
 pub fn split_raw_arrays(raw_data: &str) -> Vec<&str> {

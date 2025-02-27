@@ -8,13 +8,14 @@
 
 use std::{sync, thread};
 
-use dioxus::document::Stylesheet;
-use dioxus::prelude::*;
+use dioxus::{document::Stylesheet, prelude::*};
 use import::ImportScreen;
 use index::IndexScreen;
 use mod_screen::ModScreen;
-use sprout::views::{import, index, mod_screen};
-use sprout::{AppState, libsprout};
+use sprout::{
+    AppState, libsprout,
+    views::{import, index, mod_screen},
+};
 
 #[derive(Routable, PartialEq, Clone)]
 #[allow(clippy::enum_variant_names)]
