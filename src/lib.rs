@@ -2,9 +2,9 @@ pub mod components;
 pub mod libsprout;
 pub mod views;
 
+use dioxus::desktop::{Config, LogicalSize, WindowBuilder, tao::window::Theme};
+pub use libsprout::{mod_scanner, mod_types, path_manager, smapi};
 use std::path::PathBuf;
-use dioxus::desktop::{tao::window::Theme, Config, LogicalSize, WindowBuilder};
-pub use libsprout::{path_manager, mod_scanner, mod_types, smapi};
 
 #[derive(Debug, Clone, Default)]
 pub struct AppState {
@@ -16,7 +16,7 @@ pub struct AppState {
 use dioxus::desktop::tao::platform::macos::WindowBuilderExtMacOS;
 
 #[cfg(target_os = "macos")]
-pub fn launch_config() -> Config {
+pub fn launch_config(visible: bool) -> Config {
     Config::new()
         .with_background_color((34, 47, 62, 1))
         .with_disable_context_menu(true)
@@ -29,12 +29,12 @@ pub fn launch_config() -> Config {
                 .with_titlebar_transparent(true)
                 .with_titlebar_buttons_hidden(true)
                 .with_inner_size(LogicalSize::new(1000, 685))
-                .with_resizable(false),
+                .with_resizable(visible),
         )
 }
 
 #[cfg(target_os = "linux")]
-pub fn launch_config() -> Config {
+pub fn launch_config(visible: bool) -> Config {
     Config::new()
         .with_background_color((34, 47, 62, 1))
         .with_disable_context_menu(true)
@@ -44,12 +44,13 @@ pub fn launch_config() -> Config {
                 .with_title("Sprout")
                 .with_decorations(false)
                 .with_inner_size(LogicalSize::new(1000, 685))
-                .with_resizable(false),
+                .with_resizable(false)
+                .with_visible(visible),
         )
 }
 
 #[cfg(target_os = "windows")]
-pub fn launch_config() -> Config {
+pub fn launch_config(visible: bool) -> Config {
     Config::new()
         .with_background_color((34, 47, 62, 1))
         .with_disable_context_menu(true)
@@ -59,7 +60,8 @@ pub fn launch_config() -> Config {
                 .with_title("Sprout")
                 .with_inner_size(LogicalSize::new(1000, 685))
                 .with_resizable(false)
-                .with_decorations(false),
+                .with_decorations(false)
+                .with_visible(false),
         )
 }
 
@@ -106,7 +108,7 @@ mod tests {
     #[test]
     fn test_decode_all_mods() {
         use crate::libsprout::smapi::fetcher::get_raw_mod_list;
-        use crate::libsprout::smapi::mod_decoder::{split_raw_arrays, ModListing};
+        use crate::libsprout::smapi::mod_decoder::{ModListing, split_raw_arrays};
 
         let result: String = get_raw_mod_list().unwrap();
         let arrays: Vec<&str> = split_raw_arrays(&result);
@@ -121,7 +123,9 @@ mod tests {
     #[test]
     fn test_mod_read() {
         let app_state = AppState {
-            game_path: PathBuf::from("/Users/tahirchaudhry/Library/Application Support/Steam/steamapps/common/Stardew Valley"),
+            game_path: PathBuf::from(
+                "/Users/tahirchaudhry/Library/Application Support/Steam/steamapps/common/Stardew Valley",
+            ),
         };
         let _ = dbg!(std::fs::read_dir(&app_state.game_path).unwrap());
         let local_mods = mod_scanner::find_active_mods(&app_state.game_path);
