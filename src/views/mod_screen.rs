@@ -1,5 +1,5 @@
 use crate::views::update_mods::UpdateScreen;
-use crate::{components::TitleHeader, mod_types::Mod, AppState};
+use crate::{AppState, components::TitleHeader, mod_types::Mod};
 use dioxus::desktop::window;
 use dioxus::prelude::*;
 use std::ops::DerefMut;
@@ -136,10 +136,17 @@ pub fn ModScreen() -> Element {
                 button {
                     class: "button mod-action-button",
                     onclick: move |_| {
-                        window().new_window(
+                        let ctx = window().new_window(
                             VirtualDom::new(UpdateScreen),
-                            crate::launch_config()
+                            crate::launch_config(false)
                         );
+                        // std::thread::sleep(std::time::Duration::from_millis(500));
+                        // unwrap is used here because upgrading the weak pointer to an Rc will
+                        // only fail if the window is closed, which it cannot be unless a critical error
+                        // has occurred. Setting visible is delayed to prevent the dom from flashing.
+                        let ctx = ctx.upgrade().unwrap();
+                        ctx.request_redraw();
+                        ctx.set_visible(true);
                     },
                     "Find Updates"
                 }
