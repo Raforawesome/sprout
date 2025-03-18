@@ -51,7 +51,7 @@ required = []
 
 [bundler]
 # Bundle identifier
-identifier = "io.github.sprout"
+identifier = "me.raforaweso.sprout"
 
 # Bundle publisher
 publisher = "sprout"
@@ -65,7 +65,7 @@ icon = [
     "/icon.iconset/*",
     "/icon.icns",
     "/icon.ico",
-    "/sprout@1x-square.png"
+    "/sprout@1x-square.png",
 ]
 
 # Bundle resources
