@@ -69,10 +69,10 @@ impl Mod {
         self.version = version;
     }
 
-    pub fn set_folder(&mut self, folder: PathBuf) {
+    pub fn set_folder(&mut self, folder: PathBuf, mods_path: &Path) {
         let folder_name = folder.file_name().unwrap().to_str().unwrap();
         self.disabled_folder = path_manager::disabled_mods_dir().join(folder_name);
-        self.enabled_folder = path_manager::get_mods_path().join(folder_name);
+        self.enabled_folder = mods_path.join(folder_name);
         self.folder = folder;
     }
 }

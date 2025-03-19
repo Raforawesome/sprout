@@ -9,6 +9,7 @@ use std::path::PathBuf;
 #[derive(Debug, Clone, Default)]
 pub struct AppState {
     pub game_path: PathBuf,
+    pub mods_path: PathBuf,
 }
 
 // OS-specific launch configs
@@ -75,6 +76,7 @@ mod tests {
     fn test_app_state() {
         let app_state = AppState {
             game_path: PathBuf::from("C:/Program Files/Stardew Valley"),
+            mods_path: PathBuf::from("C:/Program Files/Stardew Valley/Mods"),
         };
 
         assert_eq!(
@@ -123,12 +125,10 @@ mod tests {
     #[test]
     fn test_mod_read() {
         let app_state = AppState {
-            game_path: PathBuf::from(
-                "/Users/tahirchaudhry/Library/Application Support/Steam/steamapps/common/Stardew Valley",
             ),
         };
         let _ = dbg!(std::fs::read_dir(&app_state.game_path).unwrap());
-        let local_mods = mod_scanner::find_active_mods(&app_state.game_path);
-        dbg!(local_mods);
+        // let local_mods = mod_scanner::find_active_mods(Signal);
+        // dbg!(local_mods);
     }
 }
