@@ -40,7 +40,7 @@ fn App() -> Element {
         Script { src: asset!("public/tailwind.js") }
         div {
             "data-theme": "abyss",
-            class: "min-h-screen min-w-screen",
+            class: "flex flex-col h-screen w-screen",
             Router::<Routes> {}
         }
     }

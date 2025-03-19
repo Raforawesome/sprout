@@ -13,12 +13,12 @@ pub fn ImportScreen() -> Element {
     rsx! {
         TitleHeader { sub_title: "Import".to_string() }
         div {  // content frame for the rest of the page
-            class: "bg-base-100 h-auto self-stretch",
+            class: "bg-base-100 flex-grow",
             div { // container for input elements
                 class: "flex items-center justify-center h-full",
                 fieldset { // input set
-                    class: "fieldset",
-                    legend { class: "fieldset-legend", "Find game directory" }
+                    class: "w-md fieldset -mt-20",
+                    legend { class: "w-md text-base fieldset-legend", "Find game directory" }
                     input { type: "file",
                         directory: true,
                         class: "file-input file-input-{picker_clr}" ,
