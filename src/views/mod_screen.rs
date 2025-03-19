@@ -12,11 +12,24 @@ pub fn ModScreen() -> Element {
             class: "overflow-y-auto flex flex-row flex-grow",
             // split containing div into two "sub-divs"
             div { // left div: mods table
-                class: "w-7/10 h-full items-center justify-center p-5",  // set width to 70%
+                class: "w-9/12 h-full items-center justify-center p-5",  // set width to 70%
                 ModTable { mods: mods }
             }
             div { // right div: buttons
-                class: "w-3/10",
+                class: "w-3/12 flex flex-col p-5 gap-4",
+
+                p { class: "text-xs text-base-content opacity-25 font-black", "CONTROLS" }
+                div {
+                    class: "flex flex-col gap-2",
+                    button { class: "btn btn-neutral", "Enable" }
+                    button { class: "btn btn-neutral", "Disable" }
+                }
+
+                div {
+                    class: "flex flex-col gap-2",
+                    button { class: "btn btn-neutral", "Check for Updates" }
+                    button { class: "btn btn-neutral", "Export Mods" }
+                }
             }
         }
     }
@@ -40,7 +53,7 @@ pub fn ModTable(mods: Vec<Mod>) -> Element {
 
     rsx! {
         div {
-            class: "overflow-auto h-full rounded-box border border-base-content/5 bg-base-100",
+            class: "overflow-auto h-full rounded-box border bg-base-100",
             table {
                 class: "table",
 
