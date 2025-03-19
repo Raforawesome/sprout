@@ -25,12 +25,12 @@ pub fn TitleHeader(sub_title: String) -> Element {
             onmousedown: |_| window().drag(),
             id: "title-header",
             class: "title-header",
-            img { class: "sprout-icon", src: asset!("public/sprout@1x-opt.webp") },
-            h1 { class: "title text-xl", "Sprout" },
-            h1 { class: "subtitle text-xl", "|" },
-            h1 { class: "subtitle text-xl", "{sub_title}" }
+            // img { class: "sprout-icon", src: asset!("public/sprout@1x-opt.webp") },
+            h1 { class: "text-5xl font-bold text-base-content", "Sprout" },
+            h1 { class: "text-5xl font-normal text-base-content", "|" },
+            h1 { class: "text-5xl font-light text-base-content", "{sub_title}" }
         }
 
-        hr { class: "divider" }
+        // hr { class: "divider" }
     }
 }
