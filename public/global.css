@@ -46,30 +46,6 @@ body {
     padding: 0; */
 }
 
-h1,
-h2,
-h3,
-h4,
-h5,
-p,
-a,
-b,
-i {
-    color: #ffffff;
-}
-
-.button {
-}
-.button:hover {
-    filter: brightness(85%);
-}
-.button:active {
-    filter: brightness(35%);
-    text-shadow: none;
-    box-shadow: none;
-    translate: 0px 5%;
-}
-
 .material-symbols-outlined {
     font-family: "Material Symbols Outlined";
     font-weight: normal;
@@ -84,12 +60,4 @@ i {
     direction: ltr;
     -moz-font-feature-settings: "liga";
     -moz-osx-font-smoothing: grayscale;
-}
-
-.disabled {
-    color: #ff7675;
-}
-
-.enabled {
-    color: #55efc4;
 }
