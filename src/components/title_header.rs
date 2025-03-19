@@ -26,9 +26,9 @@ pub fn TitleHeader(sub_title: String) -> Element {
             id: "title-header",
             class: "bg-base-100 title-header",
             img { class: "sprout-icon", src: asset!("public/sprout@1x-opt.webp") },
-            h1 { class: "title", "Sprout" },
-            h1 { class: "subtitle", "|" },
-            h1 { class: "subtitle", "{sub_title}" }
+            h1 { class: "title text-xl", "Sprout" },
+            h1 { class: "subtitle text-xl", "|" },
+            h1 { class: "subtitle text-xl", "{sub_title}" }
         }
 
         hr { class: "divider" }
