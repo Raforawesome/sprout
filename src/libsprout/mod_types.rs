@@ -14,7 +14,6 @@ pub struct Mod {
     version: String,
     min_api_version: String,
     enabled: bool,
-    enabled_signal: Signal<bool>,
     folder: PathBuf,
     disabled_folder: PathBuf,
     enabled_folder: PathBuf,
@@ -46,17 +45,12 @@ impl Mod {
     pub fn folder(&self) -> &Path {
         self.folder.as_path()
     }
-
-    pub fn enabled_signal(&self) -> Signal<bool> {
-        self.enabled_signal
-    }
 }
 
 // Setters
 impl Mod {
     pub fn set_enabled(&mut self, enabled: bool) {
         self.enabled = enabled;
-        self.enabled_signal.set(enabled);
     }
 
     pub fn set_checked(&mut self, checked: bool) {
