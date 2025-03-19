@@ -4,8 +4,8 @@ use std::path::{Path, PathBuf};
 
 #[component]
 pub fn ImportScreen() -> Element {
-    let mut state: Signal<AppState> = use_context::<Signal<AppState>>();
-    let mut picker_clr: Signal<&str> = use_signal(|| "neutral");
+    let state: Signal<AppState> = use_context::<Signal<AppState>>();
+    let picker_clr: Signal<&str> = use_signal(|| "neutral");
 
     rsx! {
         TitleHeader { sub_title: "Import".to_string() }
@@ -21,22 +21,7 @@ pub fn ImportScreen() -> Element {
                     input { type: "file",
                         directory: true,
                         class: "w-md text-base file-input file-input-{picker_clr}" ,
-                        onchange: move |evt| {
-                            let files = evt.files().unwrap().files();
-
-                            if !files.is_empty() {
-                                let game_dir: &str = &files[0]; // bounds check should be opt'd away
-
-                                if validate_game_path(Path::new(game_dir)) {
-                                    picker_clr.set("success");
-                                    state.with_mut(|s| s.game_path = PathBuf::from(game_dir));
-                                    state.with_mut(|s| s.mods_path = mods_path(&s.game_path));
-                                    navigator().replace("/mods");
-                                } else {
-                                    picker_clr.set("error");
-                                }
-                            }
-                        }
+                        onchange: move |evt| file_change_event(evt, state, picker_clr)
                     }
 
                     label {
@@ -49,6 +34,27 @@ pub fn ImportScreen() -> Element {
                         }}
                     }
                 }
+        }
+    }
+}
+
+fn file_change_event(
+    evt: Event<FormData>,
+    mut state: Signal<AppState>,
+    mut picker_clr: Signal<&str>,
+) {
+    let files = evt.files().unwrap().files();
+
+    if !files.is_empty() {
+        let game_dir: &str = &files[0]; // bounds check should be opt'd away
+
+        if validate_game_path(Path::new(game_dir)) {
+            picker_clr.set("success");
+            state.with_mut(|s| s.game_path = PathBuf::from(game_dir));
+            state.with_mut(|s| s.mods_path = mods_path(&s.game_path));
+            navigator().replace("/mods");
+        } else {
+            picker_clr.set("error");
         }
     }
 }
