@@ -7,13 +7,16 @@ pub fn ModScreen() -> Element {
     let mods: Vec<Mod> = mod_scanner::find_all_mods(state);
 
     rsx! {
+        TitleHeader { sub_title: "Mod List" }
         div {
-            class: "h-full w-full",
-
-            TitleHeader { sub_title: "Mod List" }
-            div {
-                class: "flex flex-row p-5",
+            class: "overflow-y-auto flex flex-row flex-grow",
+            // split containing div into two "sub-divs"
+            div { // left div: mods table
+                class: "w-7/10 h-full items-center justify-center p-5",  // set width to 70%
                 ModTable { mods: mods }
+            }
+            div { // right div: buttons
+                class: "w-3/10",
             }
         }
     }
