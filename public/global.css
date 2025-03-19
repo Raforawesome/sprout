@@ -23,6 +23,8 @@ html,
 body {
     overflow: hidden;
     font-family: Outfit, Inter;
+    margin: 0;
+    padding: 0;
     /*system-ui,*/
     /*-apple-system,*/
     /*BlinkMacSystemFont,*/
@@ -40,8 +42,8 @@ body {
     -webkit-user-select: none; /* Safari */
     -ms-user-select: none; /* IE 10 and IE 11 */
     user-select: none; /* Standard syntax */
-    margin: 0;
-    padding: 0;
+    /* margin: 0;
+    padding: 0; */
 }
 
 h1,
