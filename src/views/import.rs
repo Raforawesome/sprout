@@ -11,10 +11,7 @@ pub fn ImportScreen() -> Element {
         TitleHeader { sub_title: "Import".to_string() }
 
         div {  // content frame for the rest of the page
-            class: "bg-base-100 flex-grow",
-
-            div { // container for input elements
-                class: "flex items-center justify-center h-full",
+            class: "flex flex-grow items-center justify-center h-full",
 
                 fieldset { // input set
                     class: "w-md fieldset -mt-20",
@@ -25,10 +22,10 @@ pub fn ImportScreen() -> Element {
                         directory: true,
                         class: "w-md text-base file-input file-input-{picker_clr}" ,
                         onchange: move |evt| {
-                            if let Some(files) = evt.files() {
-                                let files = files.files();
-                                // this branch can't be reached unless files has exactly 1 entry
-                                let game_dir: &str = unsafe { files.get_unchecked(0) };
+                            let files = evt.files().unwrap().files();
+
+                            if !files.is_empty() {
+                                let game_dir: &str = &files[0]; // bounds check should be opt'd away
 
                                 if validate_game_path(Path::new(game_dir)) {
                                     picker_clr.set("success");
@@ -52,7 +49,6 @@ pub fn ImportScreen() -> Element {
                         }}
                     }
                 }
-            }
         }
     }
 }
