@@ -21,17 +21,40 @@ pub fn ImportScreen() -> Element {
                     legend { class: "w-md text-base fieldset-legend", "Find game directory" }
                     input { type: "file",
                         directory: true,
-                        class: "file-input file-input-{picker_clr}" ,
-                        onchange: |evt| {
+                        class: "w-md text-base file-input file-input-{picker_clr}" ,
+                        onchange: move |evt| {
                             let _ = dbg!(evt.files().unwrap().files());
+                            if let Some(files) = evt.files() {
+                                let files = files.files();
+                                // this branch can't be reached unless files has exactly 1 entry
+                                let game_dir: &str = unsafe { files.get_unchecked(0) };
+                                if validate_game_path(Path::new(game_dir)) {
+                                    picker_clr.set("success");
+                                    state.with_mut(|s| s.game_path = PathBuf::from(game_dir));
+                                    let nav: Navigator = navigator();
+                                    // navigator().replace("/mods");
+                                    nav.replace("/mods");
+                                } else {
+                                    picker_clr.set("error");
+                                }
+                            }
                         }
                     }
-                    label { class: "fieldset-label", "Make sure you don't select the 'Mods/' directory." }
+                    label {
+                        class: "w-md text-base fieldset-label",
+                        { if picker_clr() == "error" {
+                            "Invalid directory (couldn't find mods)!"
+                        } else {
+                            "Make sure you don't select the 'Mods/' directory."
+                        }}
+                    }
                 }
             }
         }
     }
 }
+
+fn process_file_event(evt: Event<FormData>) {}
 
 fn validate_game_path(p: &Path) -> bool {
     #[cfg(not(target_os = "macos"))]
