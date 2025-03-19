@@ -8,13 +8,14 @@
 
 use std::{sync, thread};
 
-use dioxus::{document::Stylesheet, prelude::*};
+use dioxus::{document::Stylesheet, logger::tracing::Level, prelude::*};
+use document::Script;
 use import::ImportScreen;
 use index::IndexScreen;
-use mod_screen::ModScreen;
+// use mod_screen::ModScreen;
 use sprout::{
     AppState, libsprout,
-    views::{import, index, mod_screen},
+    views::{import, index /*mod_screen*/},
 };
 
 #[derive(Routable, PartialEq, Clone)]
@@ -24,8 +25,8 @@ enum Routes {
     IndexScreen {},
     #[route("/import")]
     ImportScreen {},
-    #[route("/mods")]
-    ModScreen {},
+    // #[route("/mods")]
+    // ModScreen {},
 }
 
 #[component]
@@ -34,7 +35,14 @@ fn App() -> Element {
 
     rsx! {
         Stylesheet { href: asset!("public/global.css") }
-        Router::<Routes> {}
+        Stylesheet { href: asset!("public/daisyui.css") }
+        Stylesheet { href: asset!("public/daisy_themes.css") }
+        Script { src: asset!("public/tailwind.js") }
+        div {
+            "data-theme": "abyss",
+            class: "min-h-screen min-w-screen",
+            Router::<Routes> {}
+        }
     }
 }
 
