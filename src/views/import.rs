@@ -1,5 +1,6 @@
 use crate::libsprout::path_manager;
-use crate::{components::TitleHeader, AppState};
+use crate::{AppState, components::TitleHeader};
+use dioxus::logger::tracing::debug;
 use dioxus::prelude::*;
 use rfd::FileDialog;
 use std::path::{Path, PathBuf};
@@ -7,66 +8,29 @@ use std::path::{Path, PathBuf};
 #[component]
 pub fn ImportScreen() -> Element {
     let mut state: Signal<AppState> = use_context::<Signal<AppState>>();
-    let mut hide_error: Signal<bool> = use_signal(|| true);
+    let mut picker_clr: Signal<&str> = use_signal(|| "neutral");
 
     rsx! {
         TitleHeader { sub_title: "Import".to_string() }
-        style { {include_str!("../css/import_screen.css")} }
-        // Link { rel: "stylesheet", href: asset!("src/css/import_screen.css") }
-        div {
-            id: "import",
-            class: "import",
-            div {
-                class: "display:inline-block;flex-direction:column;justify-content:left;",
-                p { class: "label", "Game location:" }
-                input {
-                    id: "class-box",
-                    class: "path-box",
-                    value: state().game_path.as_os_str().to_str().unwrap(),
-                    onchange: move |new| {
-                        state.with_mut(|s| s.game_path = PathBuf::from(new.value()));
+        div {  // content frame for the rest of the page
+            class: "bg-base-100 h-auto self-stretch",
+            div { // container for input elements
+                class: "flex items-center justify-center h-full",
+                fieldset { // input set
+                    class: "fieldset",
+                    legend { class: "fieldset-legend", "Find game directory" }
+                    input { type: "file",
+                        directory: true,
+                        class: "file-input file-input-{picker_clr}" ,
+                        onchange: |evt| {
+                            let _ = dbg!(evt.files().unwrap().files());
+                        }
                     }
+                    label { class: "fieldset-label", "Make sure you don't select the 'Mods/' directory." }
                 }
-            }
-            span {
-                class: "material-symbols-outlined button picker",
-                onclick: move |_| {
-                    if let Some(path) = pick_folder() {
-                        state.with_mut(|s| s.game_path = path);
-                    }
-                },
-                "folder"
-            }
-        }
-        div {
-            class: "button-container",
-            p {
-                class: "error-text",
-                hidden: hide_error(),
-                "This game path is invalid!"
-            }
-            button {
-                id: "import-button",
-                class: "button import-button",
-                onclick: move |_| {
-                    let passes: bool = validate_game_path(&state().game_path);
-                    hide_error.set(passes);
-                    if passes {
-                        path_manager::set_game_path(state().game_path.clone());
-                        let nav: Navigator = navigator();
-                        nav.replace("/mods");
-                    }
-                },
-                "Import"
             }
         }
     }
-}
-
-fn pick_folder() -> Option<PathBuf> {
-    FileDialog::new()
-        .set_title("Choose your Stardew Valley folder:")
-        .pick_folder()
 }
 
 fn validate_game_path(p: &Path) -> bool {
