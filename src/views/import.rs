@@ -9,13 +9,18 @@ pub fn ImportScreen() -> Element {
 
     rsx! {
         TitleHeader { sub_title: "Import".to_string() }
+
         div {  // content frame for the rest of the page
             class: "bg-base-100 flex-grow",
+
             div { // container for input elements
                 class: "flex items-center justify-center h-full",
+
                 fieldset { // input set
                     class: "w-md fieldset -mt-20",
-                    legend { class: "w-md text-base fieldset-legend", "Find game directory" }
+
+                    legend { class: "w-md text-base fieldset-legend", "Select game directory:" }
+
                     input { type: "file",
                         directory: true,
                         class: "w-md text-base file-input file-input-{picker_clr}" ,
@@ -24,24 +29,25 @@ pub fn ImportScreen() -> Element {
                                 let files = files.files();
                                 // this branch can't be reached unless files has exactly 1 entry
                                 let game_dir: &str = unsafe { files.get_unchecked(0) };
+
                                 if validate_game_path(Path::new(game_dir)) {
                                     picker_clr.set("success");
                                     state.with_mut(|s| s.game_path = PathBuf::from(game_dir));
-                                    let nav: Navigator = navigator();
-                                    // navigator().replace("/mods");
-                                    nav.replace("/mods");
+                                    navigator().replace("/mods");
                                 } else {
                                     picker_clr.set("error");
                                 }
                             }
                         }
                     }
+
                     label {
                         class: "w-md text-base fieldset-label",
+
                         { if picker_clr() == "error" {
                             "Invalid directory (couldn't find mods)!"
                         } else {
-                            "Make sure you don't select the 'Mods/' directory."
+                            "Ensure you don't select the 'Mods/' directory."
                         }}
                     }
                 }
