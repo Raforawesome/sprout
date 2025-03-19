@@ -1,6 +1,6 @@
 use dioxus::desktop::window;
-use dioxus::prelude::*;
 use dioxus::document::Link;
+use dioxus::prelude::*;
 
 #[component]
 pub fn TitleHeader(sub_title: String) -> Element {
@@ -24,7 +24,7 @@ pub fn TitleHeader(sub_title: String) -> Element {
         div {
             onmousedown: |_| window().drag(),
             id: "title-header",
-            class: "title-header",
+            class: "bg-base-100 title-header",
             img { class: "sprout-icon", src: asset!("public/sprout@1x-opt.webp") },
             h1 { class: "title", "Sprout" },
             h1 { class: "subtitle", "|" },
