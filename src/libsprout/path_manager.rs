@@ -20,30 +20,6 @@ thread_local! {
     });
 }
 
-#[cfg(not(target_os = "macos"))]
-pub fn set_game_path(p: PathBuf) {
-    unsafe {
-        MODS_PATH.with(|ptr| ***ptr = p.join("Mods/"));
-        GAME_PATH.with(|ptr| ***ptr = p);
-    }
-}
-
-#[cfg(target_os = "macos")]
-pub fn set_game_path(p: PathBuf) {
-    unsafe {
-        MODS_PATH.with(|ptr| ***ptr = p.join("Contents/MacOS/Mods/"));
-        GAME_PATH.with(|ptr| ***ptr = p);
-    }
-}
-
-pub fn get_game_path() -> &'static Path {
-    unsafe { GAME_PATH.with(|ptr| ptr.as_ref().unwrap()) }
-}
-
-pub fn get_mods_path() -> &'static Path {
-    MODS_PATH.with(|ptr| unsafe { ptr.as_ref().unwrap() })
-}
-
 pub fn sprout_home_dir() -> &'static Path {
     static HOME_DIR: LazyLock<PathBuf> = LazyLock::new(|| {
         let home: PathBuf = dirs::data_local_dir().expect("Failed to find home dir!");

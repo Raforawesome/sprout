@@ -33,6 +33,7 @@ pub fn ImportScreen() -> Element {
                                 if validate_game_path(Path::new(game_dir)) {
                                     picker_clr.set("success");
                                     state.with_mut(|s| s.game_path = PathBuf::from(game_dir));
+                                    state.with_mut(|s| s.mods_path = mods_path(&s.game_path));
                                     navigator().replace("/mods");
                                 } else {
                                     picker_clr.set("error");
@@ -54,6 +55,18 @@ pub fn ImportScreen() -> Element {
             }
         }
     }
+}
+
+#[inline]
+#[cfg(target_os = "macos")]
+fn mods_path(p: &Path) -> PathBuf {
+    p.join("Contents/MacOS/Mods/")
+}
+
+#[inline]
+#[cfg(not(target_os = "macos"))]
+fn mods_path(p: &Path) -> PathBuf {
+    p.join("Mods/")
 }
 
 fn validate_game_path(p: &Path) -> bool {
