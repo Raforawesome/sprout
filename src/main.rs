@@ -10,12 +10,9 @@ use std::{sync, thread};
 
 use dioxus::{document::Stylesheet, logger::tracing::Level, prelude::*};
 use document::Script;
-use import::ImportScreen;
-use index::IndexScreen;
-// use mod_screen::ModScreen;
 use sprout::{
     AppState, libsprout,
-    views::{import, index /*mod_screen*/},
+    views::{import::ImportScreen, index::IndexScreen, mod_screen::ModScreen},
 };
 
 #[derive(Routable, PartialEq, Clone)]
@@ -25,8 +22,8 @@ enum Routes {
     IndexScreen {},
     #[route("/import")]
     ImportScreen {},
-    // #[route("/mods")]
-    // ModScreen {},
+    #[route("/mods")]
+    ModScreen {},
 }
 
 #[component]

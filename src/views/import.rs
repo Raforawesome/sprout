@@ -1,8 +1,5 @@
-use crate::libsprout::path_manager;
 use crate::{AppState, components::TitleHeader};
-use dioxus::logger::tracing::debug;
 use dioxus::prelude::*;
-use rfd::FileDialog;
 use std::path::{Path, PathBuf};
 
 #[component]
@@ -23,7 +20,6 @@ pub fn ImportScreen() -> Element {
                         directory: true,
                         class: "w-md text-base file-input file-input-{picker_clr}" ,
                         onchange: move |evt| {
-                            let _ = dbg!(evt.files().unwrap().files());
                             if let Some(files) = evt.files() {
                                 let files = files.files();
                                 // this branch can't be reached unless files has exactly 1 entry
@@ -53,8 +49,6 @@ pub fn ImportScreen() -> Element {
         }
     }
 }
-
-fn process_file_event(evt: Event<FormData>) {}
 
 fn validate_game_path(p: &Path) -> bool {
     #[cfg(not(target_os = "macos"))]

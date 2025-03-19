@@ -1,6 +1,4 @@
-use crate::views::update_mods::UpdateScreen;
 use crate::{AppState, components::TitleHeader, mod_types::Mod};
-use dioxus::desktop::window;
 use dioxus::prelude::*;
 use std::ops::DerefMut;
 
