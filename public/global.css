@@ -6,6 +6,13 @@
 }
 
 @font-face {
+    font-family: "Outfit";
+    font-style: normal;
+    font-weight: 100 900;
+    src: url(Outfit-VariableFont.ttf) format("truetype");
+}
+
+@font-face {
     font-family: "Material Symbols Outlined";
     font-style: normal;
     font-weight: 100 700;
@@ -14,9 +21,8 @@
 
 html,
 body {
-    background-color: #222f3e;
     overflow: hidden;
-    font-family: Inter;
+    font-family: Outfit, Inter;
     /*system-ui,*/
     /*-apple-system,*/
     /*BlinkMacSystemFont,*/
