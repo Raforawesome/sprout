@@ -40,13 +40,13 @@ pub fn ModTable(mods: Vec<Mod>) -> Element {
 
     rsx! {
         div {
-            class: "w-auto h-auto overflow-x-hidden overflow-y-auto rounded-box border border-base-content/5 bg-base-100",
+            class: "overflow-auto h-full rounded-box border border-base-content/5 bg-base-100",
             table {
-                class: "table overflow-y-auto",
+                class: "table",
 
                 thead {  // table head
                     tr { // header row
-                        // class: "sticky",
+                        class: "sticky top-0 bg-base-100",
 
                         th {} // skip one to allow for line numbers
                         th { "Name" }
