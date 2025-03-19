@@ -11,7 +11,7 @@ pub fn ImportScreen() -> Element {
         TitleHeader { sub_title: "Import".to_string() }
 
         div {  // content frame for the rest of the page
-            class: "flex flex-grow items-center justify-center h-full",
+            class: "flex items-center justify-center flex-grow",
 
                 fieldset { // input set
                     class: "w-md fieldset -mt-20",

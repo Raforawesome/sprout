@@ -30,7 +30,7 @@ pub fn launch_config(visible: bool) -> Config {
                 .with_titlebar_transparent(true)
                 .with_titlebar_buttons_hidden(true)
                 .with_inner_size(LogicalSize::new(1000, 685))
-                .with_resizable(visible),
+                .with_resizable(true),
         )
 }
 
