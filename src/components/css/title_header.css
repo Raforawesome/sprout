@@ -43,7 +43,8 @@
     background: #ffffff;
     opacity: 0.2;
     height: 0.075rem;
-    margin-bottom: 1rem;
+    margin: 0;
+    padding: 0;
 }
 
 .title-buttons {
