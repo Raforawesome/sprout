@@ -19,7 +19,7 @@ pub struct AppState {
 #[cfg(target_os = "macos")]
 use dioxus::desktop::tao::platform::macos::WindowBuilderExtMacOS;
 
-pub static THEME: GlobalSignal<&str> = GlobalSignal::new(|| "luxury");
+pub static THEME: GlobalSignal<&str> = GlobalSignal::new(|| "abyss");
 
 #[cfg(target_os = "macos")]
 pub fn launch_config(visible: bool) -> Config {
@@ -125,15 +125,5 @@ mod tests {
             .collect();
 
         dbg!(&mods[11]);
-    }
-
-    #[test]
-    fn test_mod_read() {
-        let app_state = AppState {
-            ),
-        };
-        let _ = dbg!(std::fs::read_dir(&app_state.game_path).unwrap());
-        // let local_mods = mod_scanner::find_active_mods(Signal);
-        // dbg!(local_mods);
     }
 }

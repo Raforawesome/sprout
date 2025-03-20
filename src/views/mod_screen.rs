@@ -42,14 +42,16 @@ pub fn ModTable(mods: Vec<Mod>) -> Element {
     let mod_entries = mods.iter().enumerate().map(|(i, m)| {
         rsx! {
             tr {
+                class: "hover:bg-base-100 hover:bg-opacity-10", // hover effects
+
                 th { class: "w-1 text-xs text-secondary", "{i + 1}" } // line number
                 td { "{m.name()}" }
                 td { class: "font-semibold", "{m.version()}" }
                 td { class: "font-semibold", "{m.min_api_version()}" }
                 if signal_smask[i]() {
-                    td { class: "text-success", "enabled" }
+                    td { class: "font-semibold text-success", "enabled" }
                 } else {
-                    td { class: "text-error", "disabled" }
+                    td { class: "font-semibold text-error", "disabled" }
                 }
             }
         }
@@ -57,7 +59,7 @@ pub fn ModTable(mods: Vec<Mod>) -> Element {
 
     rsx! {
         div {
-            class: "overflow-auto h-full rounded-box border bg-base-200",
+            class: "overflow-auto h-full rounded-box border bg-base-300",
             table {
                 class: "table table-zebra",
 
