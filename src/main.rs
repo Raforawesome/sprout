@@ -11,7 +11,7 @@ use std::{sync, thread};
 use dioxus::{document::Stylesheet, logger::tracing::Level, prelude::*};
 use document::Script;
 use sprout::{
-    AppState, libsprout,
+    AppState, THEME, libsprout,
     views::{import::ImportScreen, index::IndexScreen, mod_screen::ModScreen},
 };
 
@@ -36,7 +36,7 @@ fn App() -> Element {
         Stylesheet { href: asset!("public/daisy_themes.css") }
         Script { src: asset!("public/tailwind.js") }
         div {
-            "data-theme": "forest",
+            "data-theme": "{THEME}",
             class: "bg-base-200 flex flex-col h-screen w-screen",
             Router::<Routes> {}
         }

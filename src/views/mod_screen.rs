@@ -42,24 +42,28 @@ pub fn ModTable(mods: Vec<Mod>) -> Element {
     let mod_entries = mods.iter().enumerate().map(|(i, m)| {
         rsx! {
             tr {
-                th { "{i}" } // line number
+                th { class: "w-1 text-xs text-secondary", "{i + 1}" } // line number
                 td { "{m.name()}" }
-                td { "{m.version()" }
-                td { "{m.min_api_version()}" }
-                td { if signal_smask[i]() { "enabled" } else { "disabled" } }
+                td { class: "font-semibold", "{m.version()}" }
+                td { class: "font-semibold", "{m.min_api_version()}" }
+                if signal_smask[i]() {
+                    td { class: "text-success", "enabled" }
+                } else {
+                    td { class: "text-error", "disabled" }
+                }
             }
         }
     });
 
     rsx! {
         div {
-            class: "overflow-auto h-full rounded-box border bg-base-100",
+            class: "overflow-auto h-full rounded-box border bg-base-200",
             table {
-                class: "table",
+                class: "table table-zebra",
 
                 thead {  // table head
                     tr { // header row
-                        class: "sticky top-0 bg-base-100",
+                        class: "sticky top-0 bg-base-300",
 
                         th {} // skip one to allow for line numbers
                         th { "Name" }

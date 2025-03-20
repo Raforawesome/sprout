@@ -2,7 +2,10 @@ pub mod components;
 pub mod libsprout;
 pub mod views;
 
-use dioxus::desktop::{Config, LogicalSize, WindowBuilder, tao::window::Theme};
+use dioxus::{
+    desktop::{Config, LogicalSize, WindowBuilder, tao::window::Theme},
+    signals::GlobalSignal,
+};
 pub use libsprout::{mod_scanner, mod_types, path_manager, smapi};
 use std::path::PathBuf;
 
@@ -15,6 +18,8 @@ pub struct AppState {
 // OS-specific launch configs
 #[cfg(target_os = "macos")]
 use dioxus::desktop::tao::platform::macos::WindowBuilderExtMacOS;
+
+pub static THEME: GlobalSignal<&str> = GlobalSignal::new(|| "luxury");
 
 #[cfg(target_os = "macos")]
 pub fn launch_config(visible: bool) -> Config {
