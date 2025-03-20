@@ -36,7 +36,7 @@ fn App() -> Element {
         Stylesheet { href: asset!("public/daisy_themes.css") }
         Script { src: asset!("public/tailwind.js") }
         div {
-            "data-theme": "abyss",
+            "data-theme": "forest",
             class: "bg-base-200 flex flex-col h-screen w-screen",
             Router::<Routes> {}
         }
