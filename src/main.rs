@@ -58,7 +58,7 @@ fn main() {
 #[cfg(any(target_os = "macos", target_os = "windows", target_os = "linux"))]
 fn launch() {
     LaunchBuilder::desktop()
-        .with_cfg(sprout::launch_config(true))
+        .with_cfg(sprout::launch_config())
         .launch(App);
 }
 

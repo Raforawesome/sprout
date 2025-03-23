@@ -22,7 +22,7 @@ use dioxus::desktop::tao::platform::macos::WindowBuilderExtMacOS;
 pub static THEME: GlobalSignal<&str> = GlobalSignal::new(|| "abyss");
 
 #[cfg(target_os = "macos")]
-pub fn launch_config(visible: bool) -> Config {
+pub fn launch_config() -> Config {
     Config::new()
         .with_background_color((34, 47, 62, 1))
         .with_disable_context_menu(true)

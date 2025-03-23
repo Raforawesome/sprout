@@ -13,7 +13,7 @@ use std::path::Path;
 /// for mod folders containing a manifest.json, then
 /// uses that information to create a [Vec] of [Mod] objects.
 pub fn find_active_mods(state: Signal<AppState>) -> Vec<Mod> {
-    let p: &Path = &state().game_path;
+    // let p: &Path = &state().game_path;
     let mod_dir: &Path = &state().mods_path;
 
     mod_dir
@@ -46,7 +46,7 @@ pub fn find_active_mods(state: Signal<AppState>) -> Vec<Mod> {
 }
 
 pub fn find_all_mods(state: Signal<AppState>) -> Vec<Mod> {
-    let p: &Path = &state().game_path;
+    // let p: &Path = &state().game_path;
     let mod_dir: &Path = &state().mods_path;
     let disabled_dir: &Path = disabled_mods_dir();
 

@@ -1,5 +1,3 @@
-use std::env::consts::OS;
-
 use dioxus::desktop::window;
 use dioxus::document::Link;
 use dioxus::prelude::*;

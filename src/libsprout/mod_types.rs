@@ -2,7 +2,6 @@
 //! which represents a mod on the filesystem.
 
 use crate::libsprout::path_manager;
-use dioxus::prelude::*;
 use serde::Deserialize;
 use std::path::{Path, PathBuf};
 
@@ -13,7 +12,7 @@ pub struct Mod {
     name: String,
     version: String,
     min_api_version: String,
-    enabled: Signal<bool>,
+    enabled: bool,
     folder: PathBuf,
     disabled_folder: PathBuf,
     enabled_folder: PathBuf,
@@ -34,7 +33,7 @@ impl Mod {
     }
 
     pub fn enabled(&self) -> bool {
-        (self.enabled)()
+        self.enabled
     }
 
     pub fn folder(&self) -> &Path {
@@ -45,11 +44,7 @@ impl Mod {
 // Setters
 impl Mod {
     pub fn set_enabled(&mut self, enabled: bool) {
-        self.enabled.set(enabled);
-    }
-
-    pub fn flip_enabled(&mut self) {
-        self.enabled.with_mut(|b| *b = !*b);
+        self.enabled = enabled;
     }
 
     pub fn set_name(&mut self, name: String) {
@@ -74,6 +69,7 @@ impl Mod {
 
 impl Mod {
     pub fn enable(&mut self) -> std::io::Result<()> {
+        self.set_enabled(true);
         self.folder = self.enabled_folder.clone();
         std::fs::rename(
             self.disabled_folder.as_path(),
@@ -82,6 +78,7 @@ impl Mod {
     }
 
     pub fn disable(&mut self) -> std::io::Result<()> {
+        self.set_enabled(false);
         self.folder = self.disabled_folder.clone();
         std::fs::rename(
             self.enabled_folder.as_path(),

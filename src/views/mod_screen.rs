@@ -28,7 +28,7 @@ pub fn ModScreen() -> Element {
                         onclick: move |_| {
                             signal_smask().iter().enumerate()
                                 .filter(|(_, m)| **m)
-                                .for_each(|(i, _)| mods.with_mut(|v| v[i].set_enabled(true)));
+                                .for_each(|(i, _)| mods.with_mut(|v| v[i].enable()).unwrap());
                             signal_smask.with_mut(|v| v.iter_mut().for_each(|b| *b = false));
                         },
                         "Enable"
@@ -38,7 +38,7 @@ pub fn ModScreen() -> Element {
                         onclick: move |_| {
                             signal_smask().iter().enumerate()
                                 .filter(|(_, m)| **m)
-                                .for_each(|(i, _)| mods.with_mut(|v| v[i].set_enabled(false)));
+                                .for_each(|(i, _)| mods.with_mut(|v| v[i].disable()).unwrap());
                             signal_smask.with_mut(|v| v.iter_mut().for_each(|b| *b = false));
                         },
                         "Disable"
@@ -57,7 +57,6 @@ pub fn ModScreen() -> Element {
 
 #[component]
 pub fn ModTable(mods: Signal<Vec<Mod>>, signal_smask: Signal<Vec<bool>>) -> Element {
-    // let signal_smask: Vec<Signal<bool>> = vec![use_signal(|| false); mods.len()];
     let mut db: bool = true;
 
     let mod_entries = mods.iter().enumerate().map(|(i, m)| {
@@ -81,7 +80,7 @@ pub fn ModTable(mods: Signal<Vec<Mod>>, signal_smask: Signal<Vec<bool>>) -> Elem
                 td { "{m.name()}" }
                 td { class: "font-semibold", "{m.version()}" }
                 td { class: "font-semibold", "{m.min_api_version()}" }
-                if m.enabled() {
+                if mods()[i].enabled() {
                     td { class: "font-semibold text-success", "enabled" }
                 } else {
                     td { class: "font-semibold text-error", "disabled" }
