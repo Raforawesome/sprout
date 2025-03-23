@@ -65,25 +65,35 @@ impl Mod {
         self.enabled_folder = mods_path.join(folder_name);
         self.folder = folder;
     }
+
+    pub fn delete(self) -> std::io::Result<()> {
+        std::fs::remove_dir_all(self.folder.as_path())
+    }
 }
 
 impl Mod {
-    pub fn enable(&mut self) -> std::io::Result<()> {
-        self.set_enabled(true);
-        self.folder = self.enabled_folder.clone();
-        std::fs::rename(
-            self.disabled_folder.as_path(),
-            self.enabled_folder.as_path(),
-        )
+    pub fn enable(&mut self) {
+        if !self.enabled() {
+            self.set_enabled(true);
+            self.folder = self.enabled_folder.clone();
+            std::fs::rename(
+                self.disabled_folder.as_path(),
+                self.enabled_folder.as_path(),
+            )
+            .expect("Permission to move folders")
+        }
     }
 
-    pub fn disable(&mut self) -> std::io::Result<()> {
-        self.set_enabled(false);
-        self.folder = self.disabled_folder.clone();
-        std::fs::rename(
-            self.enabled_folder.as_path(),
-            self.disabled_folder.as_path(),
-        )
+    pub fn disable(&mut self) {
+        if self.enabled() {
+            self.set_enabled(false);
+            self.folder = self.disabled_folder.clone();
+            std::fs::rename(
+                self.enabled_folder.as_path(),
+                self.disabled_folder.as_path(),
+            )
+            .expect("Permission to move folders")
+        }
     }
 }
 
