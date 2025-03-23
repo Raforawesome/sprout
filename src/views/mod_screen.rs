@@ -1,45 +1,54 @@
-use crate::views::update_mods::UpdateScreen;
-use crate::{AppState, components::TitleHeader, mod_types::Mod};
-use dioxus::desktop::window;
+use crate::{AppState, components::TitleHeader, mod_scanner, mod_types::Mod};
 use dioxus::prelude::*;
-use std::ops::DerefMut;
 
 #[component]
-pub fn ModRow(mut mod_ptr: *mut Mod, alt: bool) -> Element {
-    let mod_obj: &mut Mod;
-    unsafe {
-        mod_obj = mod_ptr.as_mut().unwrap();
-    }
-    let enabled_signal: Signal<bool> = mod_obj.enabled_signal();
+pub fn ModScreen() -> Element {
+    let state: Signal<AppState> = use_context::<Signal<AppState>>();
+    let mut mods: Signal<Vec<Mod>> = use_signal(move || mod_scanner::find_all_mods(state));
+    // select mask made up of signals
+    let mut signal_smask: Signal<Vec<bool>> = use_signal(|| vec![false; mods.len()]);
+
     rsx! {
-        tr {
-            class: if alt { "mod-row-alt" } else { "mod-row" },
-            td {
-                style: "width:7%",
-                input {
-                    "type": "checkbox",
-                    class: "mod-checkbox",
-                    checked: mod_obj.checked(),
-                    onclick: move |_| mod_obj.set_checked(!mod_obj.checked())
+        TitleHeader { sub_title: "Mod List" }
+        div {
+            class: "overflow-y-auto flex flex-row flex-grow",
+            // split containing div into two "sub-divs"
+            div { // left div: mods table
+                class: "w-3/4 h-full items-center justify-center p-5",  // set width to 70%
+                ModTable { mods, signal_smask }
+            }
+            div { // right div: buttons
+                class: "w-1/4 flex flex-col p-5 gap-4",
+
+                p { class: "text-xs text-base-content opacity-25 font-black", "CONTROLS" }
+                div {
+                    class: "flex flex-col gap-2",
+                    button {
+                        class: "btn btn-neutral",
+                        onclick: move |_| {
+                            signal_smask().iter().enumerate()
+                                .filter(|(_, m)| **m)
+                                .for_each(|(i, _)| mods.with_mut(|v| v[i].enable()).unwrap());
+                            signal_smask.with_mut(|v| v.iter_mut().for_each(|b| *b = false));
+                        },
+                        "Enable"
+                    }
+                    button {
+                        class: "btn btn-neutral",
+                        onclick: move |_| {
+                            signal_smask().iter().enumerate()
+                                .filter(|(_, m)| **m)
+                                .for_each(|(i, _)| mods.with_mut(|v| v[i].disable()).unwrap());
+                            signal_smask.with_mut(|v| v.iter_mut().for_each(|b| *b = false));
+                        },
+                        "Disable"
+                    }
                 }
-            }
-            td {
-                style: "width:44%",
-                p { {mod_obj.name()} }
-            }
-            td {
-                style: "width:17%",
-                p { {mod_obj.version()} }
-            }
-            td {
-                style: "width:17%",
-                p { {mod_obj.min_api_version()} }
-            }
-            td {
-                style: "width:10%",
-                p {
-                    class: if enabled_signal() { "enabled" } else { "disabled" },
-                    {if enabled_signal() { "Enabled" } else { "Disabled" }}
+
+                div {
+                    class: "flex flex-col gap-2",
+                    button { class: "btn btn-neutral", "Check for Updates" }
+                    button { class: "btn btn-neutral", "Export Mods" }
                 }
             }
         }
@@ -47,110 +56,60 @@ pub fn ModRow(mut mod_ptr: *mut Mod, alt: bool) -> Element {
 }
 
 #[component]
-pub fn ModScreen() -> Element {
-    let state: Signal<AppState> = use_context::<Signal<AppState>>();
-    let mut mod_signal: Signal<Vec<Mod>> =
-        use_signal(|| crate::mod_scanner::find_all_mods(state().game_path.as_path()));
-    let mut all_checked: Signal<bool> = use_signal(|| false);
+pub fn ModTable(mods: Signal<Vec<Mod>>, signal_smask: Signal<Vec<bool>>) -> Element {
+    let mut db: bool = true;
 
-    let mut alt: bool = true;
-    let mod_list = mod_signal.iter_mut().map(|mut m| {
-        alt = !alt;
+    let mod_entries = mods.iter().enumerate().map(|(i, m)| {
+        db = !db;
         rsx! {
-            ModRow {
-                mod_ptr: m.deref_mut(),
-                alt,
+            tr {
+                class: if signal_smask()[i] {
+                    "bg-neutral"
+                } else {
+                    if db {
+                        "bg-base-200 hover:bg-base-100 hover:bg-opacity-10"
+                    } else {
+                        "hover:bg-base-100 hover:bg-opacity-10"
+                    }
+                }, // hover effects
+                onclick: move |_| {
+                    signal_smask.with_mut(|v| v[i] = !v[i]);
+                },
+
+                th { class: "w-1 text-xs text-secondary", "{i + 1}" } // line number
+                td { "{m.name()}" }
+                td { class: "font-semibold", "{m.version()}" }
+                td { class: "font-semibold", "{m.min_api_version()}" }
+                if mods()[i].enabled() {
+                    td { class: "font-semibold text-success", "enabled" }
+                } else {
+                    td { class: "font-semibold text-error", "disabled" }
+                }
             }
         }
     });
 
     rsx! {
-        style { {include_str!("../css/mod_screen.css")} }
-        TitleHeader { sub_title: "Mod List" }
-        div {  // container grid
-            class: "mod-grid",
-            div {
-                class: "mod-subgrid",
-                div {  // mod list container
-                    class: "mod-table",
-                    div {
-                        class: "header-row",
-                        span {
-                            style: "width:7%",
-                            input {
-                                "type": "checkbox",
-                                style: "display:flex;margin-left:auto;margin-right:auto",
-                                disabled: false,
-                                onclick: move |_| {
-                                    all_checked.with_mut(|b| *b = !*b);
-                                    mod_signal.with_mut(|mods| {
-                                        mods.iter_mut().for_each(|m| m.set_checked(all_checked()));
-                                    });
-                                    document::eval(&format!(r#"
-                                        document.querySelectorAll(".mod-checkbox").forEach(box => {{
-                                            box.checked = {};
-                                        }});
-                                    "#, all_checked()));
-                                }
-                            }
-                        }
-                        p { style: "width:44%", "Name" }
-                        p { style: "width:17%", "Version" }
-                        p { style: "width:17%", "Min API Ver." }
-                        p { style: "width:10%", "Status" }
+        div {
+            class: "overflow-auto h-full rounded-box border bg-base-300",
+            table {
+                class: "table",
+
+                thead {  // table head
+                    tr { // header row
+                        class: "sticky top-0 bg-base-300",
+
+                        th {} // skip one to allow for line numbers
+                        th { "Name" }
+                        th { "Version" }
+                        th { "Min API. Ver" }
+                        th { "Status" }
                     }
-                    {mod_list}
                 }
-            }
-            div {  // buttons container
-                class: "button-subgrid",
-                button {
-                    class: "button mod-action-button",
-                    onclick: move |_| {
-                        mod_signal.with_mut(|mods| {
-                            mods.iter_mut()
-                                .filter(|m| m.checked())
-                                .for_each(|m| {
-                                    m.set_enabled(true);
-                                    let _ = m.enable();
-                                });
-                        });
-                    },
-                    "Enable"
+
+                tbody {  // body of table, will store mod entries
+                    {mod_entries}
                 }
-                button {
-                    class: "button mod-action-button",
-                    onclick: move |_| {
-                        mod_signal.with_mut(|mods| {
-                            mods.iter_mut()
-                                .filter(|m| m.checked())
-                                .for_each(|m| {
-                                    m.set_enabled(false);
-                                    let _ = m.disable();
-                                });
-                        });
-                    },
-                    "Disable"
-                }
-                span { class: "divider-gap" }
-                button {
-                    class: "button mod-action-button",
-                    onclick: move |_| {
-                        let ctx = window().new_window(
-                            VirtualDom::new(UpdateScreen),
-                            crate::launch_config(false)
-                        );
-                        // std::thread::sleep(std::time::Duration::from_millis(500));
-                        // unwrap is used here because upgrading the weak pointer to an Rc will
-                        // only fail if the window is closed, which it cannot be unless a critical error
-                        // has occurred. Setting visible is delayed to prevent the dom from flashing.
-                        let ctx = ctx.upgrade().unwrap();
-                        ctx.request_redraw();
-                        ctx.set_visible(true);
-                    },
-                    "Find Updates"
-                }
-                button { class: "button mod-action-button", "Export Mods" }
             }
         }
     }

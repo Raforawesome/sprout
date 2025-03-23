@@ -6,6 +6,13 @@
 }
 
 @font-face {
+    font-family: "Outfit";
+    font-style: normal;
+    font-weight: 100 900;
+    src: url(Outfit-VariableFont.ttf) format("truetype");
+}
+
+@font-face {
     font-family: "Material Symbols Outlined";
     font-style: normal;
     font-weight: 100 700;
@@ -14,9 +21,10 @@
 
 html,
 body {
-    background-color: #222f3e;
     overflow: hidden;
-    font-family: Inter;
+    font-family: Outfit, Inter;
+    margin: 0;
+    padding: 0;
     /*system-ui,*/
     /*-apple-system,*/
     /*BlinkMacSystemFont,*/
@@ -34,32 +42,8 @@ body {
     -webkit-user-select: none; /* Safari */
     -ms-user-select: none; /* IE 10 and IE 11 */
     user-select: none; /* Standard syntax */
-    margin: 0;
-    padding: 0;
-}
-
-h1,
-h2,
-h3,
-h4,
-h5,
-p,
-a,
-b,
-i {
-    color: #ffffff;
-}
-
-.button {
-}
-.button:hover {
-    filter: brightness(85%);
-}
-.button:active {
-    filter: brightness(35%);
-    text-shadow: none;
-    box-shadow: none;
-    translate: 0px 5%;
+    /* margin: 0;
+    padding: 0; */
 }
 
 .material-symbols-outlined {
@@ -76,12 +60,4 @@ i {
     direction: ltr;
     -moz-font-feature-settings: "liga";
     -moz-osx-font-smoothing: grayscale;
-}
-
-.disabled {
-    color: #ff7675;
-}
-
-.enabled {
-    color: #55efc4;
 }

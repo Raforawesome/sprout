@@ -8,13 +8,11 @@
 
 use std::{sync, thread};
 
-use dioxus::{document::Stylesheet, prelude::*};
-use import::ImportScreen;
-use index::IndexScreen;
-use mod_screen::ModScreen;
+use dioxus::{document::Stylesheet, logger::tracing::Level, prelude::*};
+use document::Script;
 use sprout::{
-    AppState, libsprout,
-    views::{import, index, mod_screen},
+    AppState, THEME, libsprout,
+    views::{import::ImportScreen, index::IndexScreen, mod_screen::ModScreen},
 };
 
 #[derive(Routable, PartialEq, Clone)]
@@ -34,11 +32,21 @@ fn App() -> Element {
 
     rsx! {
         Stylesheet { href: asset!("public/global.css") }
-        Router::<Routes> {}
+        Stylesheet { href: asset!("public/daisyui.css") }
+        Stylesheet { href: asset!("public/daisy_themes.css") }
+        Script { src: asset!("public/tailwind.js") }
+        div {
+            "data-theme": "{THEME}",
+            class: "bg-base-200 flex flex-col h-screen w-screen",
+            Router::<Routes> {}
+        }
     }
 }
 
 fn main() {
+    // Initialize dioxus logger with custom trace level
+    dioxus::logger::init(Level::DEBUG).expect("Failed to initialize logger");
+
     // Force mod listings to be fetched on another thread as they take
     // time to parse, and shouldn't be generated on-the-fly when required.
     let _ = thread::spawn(|| {
@@ -50,7 +58,7 @@ fn main() {
 #[cfg(any(target_os = "macos", target_os = "windows", target_os = "linux"))]
 fn launch() {
     LaunchBuilder::desktop()
-        .with_cfg(sprout::launch_config(true))
+        .with_cfg(sprout::launch_config())
         .launch(App);
 }
 

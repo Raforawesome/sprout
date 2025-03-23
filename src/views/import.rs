@@ -1,72 +1,74 @@
-use crate::libsprout::path_manager;
-use crate::{components::TitleHeader, AppState};
+use crate::{AppState, components::TitleHeader};
 use dioxus::prelude::*;
-use rfd::FileDialog;
 use std::path::{Path, PathBuf};
 
 #[component]
 pub fn ImportScreen() -> Element {
-    let mut state: Signal<AppState> = use_context::<Signal<AppState>>();
-    let mut hide_error: Signal<bool> = use_signal(|| true);
+    let state: Signal<AppState> = use_context::<Signal<AppState>>();
+    let picker_clr: Signal<&str> = use_signal(|| "neutral");
 
     rsx! {
         TitleHeader { sub_title: "Import".to_string() }
-        style { {include_str!("../css/import_screen.css")} }
-        // Link { rel: "stylesheet", href: asset!("src/css/import_screen.css") }
-        div {
-            id: "import",
-            class: "import",
-            div {
-                class: "display:inline-block;flex-direction:column;justify-content:left;",
-                p { class: "label", "Game location:" }
-                input {
-                    id: "class-box",
-                    class: "path-box",
-                    value: state().game_path.as_os_str().to_str().unwrap(),
-                    onchange: move |new| {
-                        state.with_mut(|s| s.game_path = PathBuf::from(new.value()));
+
+        div {  // content frame for the rest of the page
+            class: "flex items-center justify-center flex-grow",
+
+                fieldset { // input set
+                    class: "w-md fieldset -mt-20",
+
+                    legend { class: "w-md text-base fieldset-legend", "Select game directory:" }
+
+                    input { type: "file",
+                        directory: true,
+                        class: "w-md text-base file-input file-input-{picker_clr}" ,
+                        onchange: move |evt| file_change_event(evt, state, picker_clr)
+                    }
+
+                    label {
+                        class: "w-md text-base fieldset-label",
+
+                        { if picker_clr() == "error" {
+                            "Invalid directory (couldn't find mods)!"
+                        } else {
+                            "Ensure you don't select the 'Mods/' directory."
+                        }}
                     }
                 }
-            }
-            span {
-                class: "material-symbols-outlined button picker",
-                onclick: move |_| {
-                    if let Some(path) = pick_folder() {
-                        state.with_mut(|s| s.game_path = path);
-                    }
-                },
-                "folder"
-            }
-        }
-        div {
-            class: "button-container",
-            p {
-                class: "error-text",
-                hidden: hide_error(),
-                "This game path is invalid!"
-            }
-            button {
-                id: "import-button",
-                class: "button import-button",
-                onclick: move |_| {
-                    let passes: bool = validate_game_path(&state().game_path);
-                    hide_error.set(passes);
-                    if passes {
-                        path_manager::set_game_path(state().game_path.clone());
-                        let nav: Navigator = navigator();
-                        nav.replace("/mods");
-                    }
-                },
-                "Import"
-            }
         }
     }
 }
 
-fn pick_folder() -> Option<PathBuf> {
-    FileDialog::new()
-        .set_title("Choose your Stardew Valley folder:")
-        .pick_folder()
+fn file_change_event(
+    evt: Event<FormData>,
+    mut state: Signal<AppState>,
+    mut picker_clr: Signal<&str>,
+) {
+    let files = evt.files().unwrap().files();
+
+    if !files.is_empty() {
+        let game_dir: &str = &files[0]; // bounds check should be opt'd away
+
+        if validate_game_path(Path::new(game_dir)) {
+            picker_clr.set("success");
+            state.with_mut(|s| s.game_path = PathBuf::from(game_dir));
+            state.with_mut(|s| s.mods_path = mods_path(&s.game_path));
+            navigator().replace("/mods");
+        } else {
+            picker_clr.set("error");
+        }
+    }
+}
+
+#[inline]
+#[cfg(target_os = "macos")]
+fn mods_path(p: &Path) -> PathBuf {
+    p.join("Contents/MacOS/Mods/")
+}
+
+#[inline]
+#[cfg(not(target_os = "macos"))]
+fn mods_path(p: &Path) -> PathBuf {
+    p.join("Mods/")
 }
 
 fn validate_game_path(p: &Path) -> bool {

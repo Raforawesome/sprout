@@ -4,7 +4,7 @@
 
 use std::sync::{Arc, LazyLock};
 
-use dioxus::logger::tracing::{debug, warn};
+use dioxus::logger::tracing::{trace, warn};
 
 use super::mod_decoder::{ModListing, split_raw_arrays};
 
@@ -16,7 +16,7 @@ pub static MOD_LISTINGS: LazyLock<Arc<Vec<ModListing>>> = LazyLock::new(|| {
             .iter()
             .filter_map(|s| match json5::from_str::<ModListing>(s) {
                 Ok(m) => {
-                    debug!(?m.name, "Loaded mod");
+                    trace!(?m.name, "Loaded mod");
                     Some(m)
                 }
                 Err(e) => {

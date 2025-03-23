@@ -2,21 +2,27 @@ pub mod components;
 pub mod libsprout;
 pub mod views;
 
-use dioxus::desktop::{Config, LogicalSize, WindowBuilder, tao::window::Theme};
+use dioxus::{
+    desktop::{Config, LogicalSize, WindowBuilder, tao::window::Theme},
+    signals::GlobalSignal,
+};
 pub use libsprout::{mod_scanner, mod_types, path_manager, smapi};
 use std::path::PathBuf;
 
 #[derive(Debug, Clone, Default)]
 pub struct AppState {
     pub game_path: PathBuf,
+    pub mods_path: PathBuf,
 }
 
 // OS-specific launch configs
 #[cfg(target_os = "macos")]
 use dioxus::desktop::tao::platform::macos::WindowBuilderExtMacOS;
 
+pub static THEME: GlobalSignal<&str> = GlobalSignal::new(|| "abyss");
+
 #[cfg(target_os = "macos")]
-pub fn launch_config(visible: bool) -> Config {
+pub fn launch_config() -> Config {
     Config::new()
         .with_background_color((34, 47, 62, 1))
         .with_disable_context_menu(true)
@@ -27,9 +33,9 @@ pub fn launch_config(visible: bool) -> Config {
                 .with_fullsize_content_view(true)
                 .with_title_hidden(true)
                 .with_titlebar_transparent(true)
-                .with_titlebar_buttons_hidden(true)
+                // .with_titlebar_buttons_hidden(true)
                 .with_inner_size(LogicalSize::new(1000, 685))
-                .with_resizable(visible),
+                .with_resizable(true),
         )
 }
 
@@ -75,6 +81,7 @@ mod tests {
     fn test_app_state() {
         let app_state = AppState {
             game_path: PathBuf::from("C:/Program Files/Stardew Valley"),
+            mods_path: PathBuf::from("C:/Program Files/Stardew Valley/Mods"),
         };
 
         assert_eq!(
@@ -118,17 +125,5 @@ mod tests {
             .collect();
 
         dbg!(&mods[11]);
-    }
-
-    #[test]
-    fn test_mod_read() {
-        let app_state = AppState {
-            game_path: PathBuf::from(
-                "/Users/tahirchaudhry/Library/Application Support/Steam/steamapps/common/Stardew Valley",
-            ),
-        };
-        let _ = dbg!(std::fs::read_dir(&app_state.game_path).unwrap());
-        let local_mods = mod_scanner::find_active_mods(&app_state.game_path);
-        dbg!(local_mods);
     }
 }

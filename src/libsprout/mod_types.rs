@@ -2,7 +2,6 @@
 //! which represents a mod on the filesystem.
 
 use crate::libsprout::path_manager;
-use dioxus::prelude::*;
 use serde::Deserialize;
 use std::path::{Path, PathBuf};
 
@@ -14,11 +13,9 @@ pub struct Mod {
     version: String,
     min_api_version: String,
     enabled: bool,
-    enabled_signal: Signal<bool>,
     folder: PathBuf,
     disabled_folder: PathBuf,
     enabled_folder: PathBuf,
-    checked: bool,
 }
 
 // Getters
@@ -39,16 +36,8 @@ impl Mod {
         self.enabled
     }
 
-    pub fn checked(&self) -> bool {
-        self.checked
-    }
-
     pub fn folder(&self) -> &Path {
         self.folder.as_path()
-    }
-
-    pub fn enabled_signal(&self) -> Signal<bool> {
-        self.enabled_signal
     }
 }
 
@@ -56,11 +45,6 @@ impl Mod {
 impl Mod {
     pub fn set_enabled(&mut self, enabled: bool) {
         self.enabled = enabled;
-        self.enabled_signal.set(enabled);
-    }
-
-    pub fn set_checked(&mut self, checked: bool) {
-        self.checked = checked;
     }
 
     pub fn set_name(&mut self, name: String) {
@@ -75,16 +59,17 @@ impl Mod {
         self.version = version;
     }
 
-    pub fn set_folder(&mut self, folder: PathBuf) {
+    pub fn set_folder(&mut self, folder: PathBuf, mods_path: &Path) {
         let folder_name = folder.file_name().unwrap().to_str().unwrap();
         self.disabled_folder = path_manager::disabled_mods_dir().join(folder_name);
-        self.enabled_folder = path_manager::get_mods_path().join(folder_name);
+        self.enabled_folder = mods_path.join(folder_name);
         self.folder = folder;
     }
 }
 
 impl Mod {
     pub fn enable(&mut self) -> std::io::Result<()> {
+        self.set_enabled(true);
         self.folder = self.enabled_folder.clone();
         std::fs::rename(
             self.disabled_folder.as_path(),
@@ -93,6 +78,7 @@ impl Mod {
     }
 
     pub fn disable(&mut self) -> std::io::Result<()> {
+        self.set_enabled(false);
         self.folder = self.disabled_folder.clone();
         std::fs::rename(
             self.enabled_folder.as_path(),
