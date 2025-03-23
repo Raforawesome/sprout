@@ -126,4 +126,23 @@ mod tests {
 
         dbg!(&mods[11]);
     }
+
+    #[test]
+    fn find_specific_mod() {
+        use crate::libsprout::smapi::fetcher::get_raw_mod_list;
+        use crate::libsprout::smapi::mod_decoder::{ModListing, split_raw_arrays};
+
+        let result: String = get_raw_mod_list().unwrap();
+        let arrays: Vec<&str> = split_raw_arrays(&result);
+        let mods: Vec<ModListing> = arrays
+            .iter()
+            .map(|s| json5::from_str(s).expect("Failed to parse mod!"))
+            .collect();
+
+        let search = mods
+            .iter()
+            .find(|m| m.name.to_lowercase().contains("convenient"));
+
+        dbg!(search);
+    }
 }
