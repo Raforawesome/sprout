@@ -13,11 +13,10 @@ pub struct Mod {
     name: String,
     version: String,
     min_api_version: String,
-    enabled: bool,
+    enabled: Signal<bool>,
     folder: PathBuf,
     disabled_folder: PathBuf,
     enabled_folder: PathBuf,
-    checked: bool,
 }
 
 // Getters
@@ -35,11 +34,7 @@ impl Mod {
     }
 
     pub fn enabled(&self) -> bool {
-        self.enabled
-    }
-
-    pub fn checked(&self) -> bool {
-        self.checked
+        (self.enabled)()
     }
 
     pub fn folder(&self) -> &Path {
@@ -50,11 +45,11 @@ impl Mod {
 // Setters
 impl Mod {
     pub fn set_enabled(&mut self, enabled: bool) {
-        self.enabled = enabled;
+        self.enabled.set(enabled);
     }
 
-    pub fn set_checked(&mut self, checked: bool) {
-        self.checked = checked;
+    pub fn flip_enabled(&mut self) {
+        self.enabled.with_mut(|b| *b = !*b);
     }
 
     pub fn set_name(&mut self, name: String) {

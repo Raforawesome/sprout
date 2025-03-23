@@ -6,7 +6,7 @@ use super::mod_types::{Manifest, Mod};
 use crate::{AppState, libsprout::path_manager::disabled_mods_dir};
 use dioxus::signals::Signal;
 use json5;
-use std::path::{Path, PathBuf};
+use std::path::Path;
 
 /// ## Scanning active mods
 /// This function scans the provided game directory
