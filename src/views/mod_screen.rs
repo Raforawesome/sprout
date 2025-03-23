@@ -4,7 +4,9 @@ use dioxus::prelude::*;
 #[component]
 pub fn ModScreen() -> Element {
     let state: Signal<AppState> = use_context::<Signal<AppState>>();
-    let mods: Vec<Mod> = mod_scanner::find_all_mods(state);
+    let mut mods: Signal<Vec<Mod>> = use_signal(move || mod_scanner::find_all_mods(state));
+    // select mask made up of signals
+    let mut signal_smask: Signal<Vec<bool>> = use_signal(|| vec![false; mods.len()]);
 
     rsx! {
         TitleHeader { sub_title: "Mod List" }
@@ -13,7 +15,7 @@ pub fn ModScreen() -> Element {
             // split containing div into two "sub-divs"
             div { // left div: mods table
                 class: "w-3/4 h-full items-center justify-center p-5",  // set width to 70%
-                ModTable { mods: mods }
+                ModTable { mods, signal_smask }
             }
             div { // right div: buttons
                 class: "w-1/4 flex flex-col p-5 gap-4",
@@ -21,8 +23,26 @@ pub fn ModScreen() -> Element {
                 p { class: "text-xs text-base-content opacity-25 font-black", "CONTROLS" }
                 div {
                     class: "flex flex-col gap-2",
-                    button { class: "btn btn-neutral", "Enable" }
-                    button { class: "btn btn-neutral", "Disable" }
+                    button {
+                        class: "btn btn-neutral",
+                        onclick: move |_| {
+                            signal_smask().iter().enumerate()
+                                .filter(|(_, m)| **m)
+                                .for_each(|(i, _)| mods.with_mut(|v| v[i].set_enabled(true)));
+                            signal_smask.with_mut(|v| v.iter_mut().for_each(|b| *b = false));
+                        },
+                        "Enable"
+                    }
+                    button {
+                        class: "btn btn-neutral",
+                        onclick: move |_| {
+                            signal_smask().iter().enumerate()
+                                .filter(|(_, m)| **m)
+                                .for_each(|(i, _)| mods.with_mut(|v| v[i].set_enabled(false)));
+                            signal_smask.with_mut(|v| v.iter_mut().for_each(|b| *b = false));
+                        },
+                        "Disable"
+                    }
                 }
 
                 div {
@@ -36,8 +56,9 @@ pub fn ModScreen() -> Element {
 }
 
 #[component]
-pub fn ModTable(mods: Vec<Mod>) -> Element {
-    let signal_smask: Vec<Signal<bool>> = vec![Signal::new(false); mods.len()];
+pub fn ModTable(mods: Signal<Vec<Mod>>, signal_smask: Signal<Vec<bool>>) -> Element {
+    // let signal_smask: Vec<Signal<bool>> = vec![use_signal(|| false); mods.len()];
+    let mut db: bool = true;
 
     let mod_entries = mods.iter().enumerate().map(|(i, m)| {
         db = !db;
@@ -60,7 +81,7 @@ pub fn ModTable(mods: Vec<Mod>) -> Element {
                 td { "{m.name()}" }
                 td { class: "font-semibold", "{m.version()}" }
                 td { class: "font-semibold", "{m.min_api_version()}" }
-                if signal_smask[i]() {
+                if m.enabled() {
                     td { class: "font-semibold text-success", "enabled" }
                 } else {
                     td { class: "font-semibold text-error", "disabled" }
