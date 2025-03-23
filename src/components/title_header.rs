@@ -67,14 +67,17 @@ pub fn TitleHeader(sub_title: String) -> Element {
                         }
                         ul {
                             class: "p-2 shadow menu dropdown-content rounded-box bg-base-100 w-52",
-                            li { a { href: "#", onclick: move |_| THEME.with_mut(|s| *s = "abyss"), "abyss" } }
+                            li { a { href: "#", onclick: move |_| THEME.with_mut(|s| *s = "forest"), "forest" } }
                             li { a { href: "#", onclick: move |_| THEME.with_mut(|s| *s = "synthwave"), "synthwave" } }
+                            li { a { href: "#", onclick: move |_| THEME.with_mut(|s| *s = "abyss"), "abyss" } }
+                            li { a { href: "#", onclick: move |_| THEME.with_mut(|s| *s = "night"), "night" } }
                             li { a { href: "#", onclick: move |_| THEME.with_mut(|s| *s = "coffee"), "coffee" } }
                             li { a { href: "#", onclick: move |_| THEME.with_mut(|s| *s = "luxury"), "luxury" } }
-                            li { a { href: "#", onclick: move |_| THEME.with_mut(|s| *s = "forest"), "forest" } }
-                            li { a { href: "#", onclick: move |_| THEME.with_mut(|s| *s = "cyberpunk"), "cyberpunk" } }
+                            li { a { href: "#", onclick: move |_| THEME.with_mut(|s| *s = "dracula"), "dracula" } }
+                            li { a { href: "#", onclick: move |_| THEME.with_mut(|s| *s = "sunset"), "sunset" } }
                             li { a { href: "#", onclick: move |_| THEME.with_mut(|s| *s = "business"), "business" } }
                             li { a { href: "#", onclick: move |_| THEME.with_mut(|s| *s = "black"), "black" } }
+                            // li { a { href: "#", onclick: move |_| THEME.with_mut(|s| *s = "cyberpunk"), "cyberpunk" } }
                         }
                     }
                 }
