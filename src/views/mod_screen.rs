@@ -20,7 +20,7 @@ pub fn ModScreen() -> Element {
             div { // right div: buttons
                 class: "w-1/4 flex flex-col p-5 gap-4",
 
-                p { class: "text-xs text-base-content opacity-25 font-black", "CONTROLS" }
+                p { class: "text-xs text-base-content opacity-50 font-black", "CONTROLS" }
                 div {
                     class: "flex flex-col gap-2",
                     button {
@@ -28,7 +28,7 @@ pub fn ModScreen() -> Element {
                         onclick: move |_| {
                             signal_smask().iter().enumerate()
                                 .filter(|(_, m)| **m)
-                                .for_each(|(i, _)| mods.with_mut(|v| v[i].enable()).unwrap());
+                                .for_each(|(i, _)| mods.with_mut(|v| v[i].enable()));
                             signal_smask.with_mut(|v| v.iter_mut().for_each(|b| *b = false));
                         },
                         "Enable"
@@ -38,16 +38,35 @@ pub fn ModScreen() -> Element {
                         onclick: move |_| {
                             signal_smask().iter().enumerate()
                                 .filter(|(_, m)| **m)
-                                .for_each(|(i, _)| mods.with_mut(|v| v[i].disable()).unwrap());
+                                .for_each(|(i, _)| mods.with_mut(|v| v[i].disable()));
                             signal_smask.with_mut(|v| v.iter_mut().for_each(|b| *b = false));
                         },
                         "Disable"
+                    }
+                    button {
+                        class: "btn btn-neutral",
+                        onclick: move |_| {
+                            signal_smask().iter().enumerate()
+                                .filter(|(_, m)| **m)
+                                .for_each(|(i, _)| {
+                                    mods.with_mut(|v| v.remove(i).delete()).expect("Permission to delete mod");
+                                    signal_smask.with_mut(|v| v.remove(i));
+                                });
+                            signal_smask.with_mut(|v| v.iter_mut().for_each(|b| *b = false));
+                        },
+                        "Delete"
                     }
                 }
 
                 div {
                     class: "flex flex-col gap-2",
+                    button { class: "btn btn-neutral", "Download Mods" }
                     button { class: "btn btn-neutral", "Check for Updates" }
+                }
+
+                div {
+                    class: "flex flex-col gap-2",
+                    button { class: "btn btn-neutral", "Import Mods" }
                     button { class: "btn btn-neutral", "Export Mods" }
                 }
             }
@@ -81,7 +100,7 @@ pub fn ModTable(mods: Signal<Vec<Mod>>, signal_smask: Signal<Vec<bool>>) -> Elem
                 td { class: "font-semibold", "{m.version()}" }
                 td { class: "font-semibold", "{m.min_api_version()}" }
                 if mods()[i].enabled() {
-                    td { class: "font-semibold text-success", "enabled" }
+                    td { class: "font-semibold text-success", " enabled" }
                 } else {
                     td { class: "font-semibold text-error", "disabled" }
                 }

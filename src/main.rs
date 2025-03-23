@@ -44,14 +44,15 @@ fn App() -> Element {
 }
 
 fn main() {
-    // Initialize dioxus logger with custom trace level
+    // initialize dioxus logger with custom trace level
     dioxus::logger::init(Level::DEBUG).expect("Failed to initialize logger");
 
-    // Force mod listings to be fetched on another thread as they take
+    // force mod listings to be fetched on another thread as they take
     // time to parse, and shouldn't be generated on-the-fly when required.
     let _ = thread::spawn(|| {
         sync::LazyLock::force(&libsprout::smapi::fetcher::MOD_LISTINGS);
     });
+
     launch();
 }
 
