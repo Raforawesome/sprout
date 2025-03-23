@@ -40,9 +40,21 @@ pub fn ModTable(mods: Vec<Mod>) -> Element {
     let signal_smask: Vec<Signal<bool>> = vec![Signal::new(false); mods.len()];
 
     let mod_entries = mods.iter().enumerate().map(|(i, m)| {
+        db = !db;
         rsx! {
             tr {
-                class: "hover:bg-base-100 hover:bg-opacity-10", // hover effects
+                class: if signal_smask()[i] {
+                    "bg-neutral"
+                } else {
+                    if db {
+                        "bg-base-200 hover:bg-base-100 hover:bg-opacity-10"
+                    } else {
+                        "hover:bg-base-100 hover:bg-opacity-10"
+                    }
+                }, // hover effects
+                onclick: move |_| {
+                    signal_smask.with_mut(|v| v[i] = !v[i]);
+                },
 
                 th { class: "w-1 text-xs text-secondary", "{i + 1}" } // line number
                 td { "{m.name()}" }
@@ -61,7 +73,7 @@ pub fn ModTable(mods: Vec<Mod>) -> Element {
         div {
             class: "overflow-auto h-full rounded-box border bg-base-300",
             table {
-                class: "table table-zebra",
+                class: "table",
 
                 thead {  // table head
                     tr { // header row
