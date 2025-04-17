@@ -19,7 +19,7 @@ pub struct AppState {
 #[cfg(target_os = "macos")]
 use dioxus::desktop::tao::platform::macos::WindowBuilderExtMacOS;
 
-pub static THEME: GlobalSignal<&str> = GlobalSignal::new(|| "abyss");
+pub static THEME: GlobalSignal<&str> = GlobalSignal::new(|| "dark");
 
 #[cfg(target_os = "macos")]
 pub fn launch_config() -> Config {

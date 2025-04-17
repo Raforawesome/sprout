@@ -67,6 +67,8 @@ pub fn TitleHeader(sub_title: String) -> Element {
                         }
                         ul {
                             class: "p-2 shadow menu dropdown-content rounded-box bg-base-100 w-52",
+                            li { a { href: "#", onclick: move |_| THEME.with_mut(|s| *s = "light"), "light" } }
+                            li { a { href: "#", onclick: move |_| THEME.with_mut(|s| *s = "dark"), "dark" } }
                             li { a { href: "#", onclick: move |_| THEME.with_mut(|s| *s = "forest"), "forest" } }
                             li { a { href: "#", onclick: move |_| THEME.with_mut(|s| *s = "synthwave"), "synthwave" } }
                             li { a { href: "#", onclick: move |_| THEME.with_mut(|s| *s = "abyss"), "abyss" } }
