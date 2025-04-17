@@ -1,6 +1,6 @@
 use std::{
     fs::File,
-    io::{BufWriter, Write},
+    io::{BufWriter, Cursor, Write},
     path::{Path, PathBuf},
 };
 
@@ -12,6 +12,7 @@ use zip::{ZipWriter, write::SimpleFileOptions};
 pub fn ModScreen() -> Element {
     let state: Signal<AppState> = use_context::<Signal<AppState>>();
     let mut mods: Signal<Vec<Mod>> = use_signal(move || mod_scanner::find_all_mods(state));
+    let mods_dir: PathBuf = state().mods_path.clone();
     // select mask made up of signals
     let mut signal_smask: Signal<Vec<bool>> = use_signal(|| vec![false; mods.len()]);
 
@@ -75,8 +76,12 @@ pub fn ModScreen() -> Element {
                     class: "flex flex-col gap-2",
                     button {
                         class: "btn btn-primary",
-                        onclick: |_| {
+                        onclick: move |_| {
+                            let Some(file_path) = rfd::FileDialog::new().add_filter("zip", &["zip"]).pick_file() else { return; };
+                            let file: Vec<u8> = std::fs::read(&file_path).expect("Read permissions");
+                            let mut zip = zip::ZipArchive::new(Cursor::new(file)).unwrap();
 
+                            zip.extract(&mods_dir).expect("Write permissions");
                         },
                         "Import Mods"
                     }
@@ -91,13 +96,11 @@ pub fn ModScreen() -> Element {
                             signal_smask().iter().enumerate()
                                 .filter(|(_, m)| **m)
                                 .for_each(|(i, _)| {
-                                    let mod_list: Vec<Mod> = mods();
-                                    let cur_mod: &Mod = &mod_list[i];
-                                    // for cur_mod in mod_list.iter() {
+                                    let mod_list: Vec<Mod> = mods();  // load all mods
+                                    let cur_mod: &Mod = &mod_list[i];  // get next selected mod
                                     let mod_folder = if cur_mod.enabled() { cur_mod.enabled_folder() } else { cur_mod.disabled_folder() };
-                                    let mod_path: PathBuf = PathBuf::from(mod_folder.file_name().unwrap());
-                                    zip_dir(&mut zip_file, mod_folder, &mod_path, zip_opts);
-                                    // }
+                                    let mod_path: PathBuf = PathBuf::from(mod_folder.file_name().unwrap()); // create new base path
+                                    zip_dir(&mut zip_file, mod_folder, &mod_path, zip_opts); // recursively zip folder
                                 });
                             zip_file.finish().unwrap();
                         },
