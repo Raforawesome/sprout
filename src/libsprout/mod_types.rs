@@ -39,6 +39,14 @@ impl Mod {
     pub fn folder(&self) -> &Path {
         self.folder.as_path()
     }
+
+    pub fn disabled_folder(&self) -> &Path {
+        self.disabled_folder.as_path()
+    }
+
+    pub fn enabled_folder(&self) -> &Path {
+        self.enabled_folder.as_path()
+    }
 }
 
 // Setters
