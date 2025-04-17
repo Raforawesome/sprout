@@ -1,5 +1,12 @@
+use std::{
+    fs::File,
+    io::{BufWriter, Write},
+    path::{Path, PathBuf},
+};
+
 use crate::{AppState, components::TitleHeader, mod_scanner, mod_types::Mod};
 use dioxus::prelude::*;
+use zip::{ZipWriter, write::SimpleFileOptions};
 
 #[component]
 pub fn ModScreen() -> Element {
@@ -24,7 +31,7 @@ pub fn ModScreen() -> Element {
                 div {
                     class: "flex flex-col gap-2",
                     button {
-                        class: "btn btn-neutral",
+                        class: "btn btn-primary",
                         onclick: move |_| {
                             signal_smask().iter().enumerate()
                                 .filter(|(_, m)| **m)
@@ -34,7 +41,7 @@ pub fn ModScreen() -> Element {
                         "Enable"
                     }
                     button {
-                        class: "btn btn-neutral",
+                        class: "btn btn-primary",
                         onclick: move |_| {
                             signal_smask().iter().enumerate()
                                 .filter(|(_, m)| **m)
@@ -44,7 +51,7 @@ pub fn ModScreen() -> Element {
                         "Disable"
                     }
                     button {
-                        class: "btn btn-neutral",
+                        class: "btn btn-primary",
                         onclick: move |_| {
                             signal_smask().iter().enumerate()
                                 .filter(|(_, m)| **m)
@@ -66,10 +73,62 @@ pub fn ModScreen() -> Element {
 
                 div {
                     class: "flex flex-col gap-2",
-                    button { class: "btn btn-neutral", "Import Mods" }
-                    button { class: "btn btn-neutral", "Export Mods" }
+                    button {
+                        class: "btn btn-primary",
+                        onclick: |_| {
+
+                        },
+                        "Import Mods"
+                    }
+                    button {
+                        class: "btn btn-primary",
+                        onclick: move |_| {
+                            let Some(out_path) = rfd::FileDialog::new().add_filter("zip", &["zip"]).save_file() else { return; };
+                            let mut out_file: File = File::create(&out_path).expect("Write permissions");
+                            let mut zip_file: ZipWriter<BufWriter<&mut File>> = ZipWriter::new(BufWriter::new(&mut out_file));
+                            let zip_opts = SimpleFileOptions::default().compression_method(zip::CompressionMethod::Deflated);
+
+                            signal_smask().iter().enumerate()
+                                .filter(|(_, m)| **m)
+                                .for_each(|(i, _)| {
+                                    let mod_list: Vec<Mod> = mods();
+                                    let cur_mod: &Mod = &mod_list[i];
+                                    // for cur_mod in mod_list.iter() {
+                                    let mod_folder = if cur_mod.enabled() { cur_mod.enabled_folder() } else { cur_mod.disabled_folder() };
+                                    let mod_path: PathBuf = PathBuf::from(mod_folder.file_name().unwrap());
+                                    zip_dir(&mut zip_file, mod_folder, &mod_path, zip_opts);
+                                    // }
+                                });
+                            zip_file.finish().unwrap();
+                        },
+                        "Export Mods"
+                    }
                 }
             }
+        }
+    }
+}
+
+fn zip_dir(
+    zip: &mut ZipWriter<BufWriter<&mut File>>,
+    folder_path: &Path,
+    path: &Path,
+    opts: SimpleFileOptions,
+) {
+    for entry in std::fs::read_dir(folder_path).unwrap() {
+        let entry = entry.unwrap();
+        let entry_path: PathBuf = entry.path();
+        let entry_name = entry.file_name();
+
+        let zip_path = path.join(&entry_name);
+        if entry_path.is_file() {
+            let file = std::fs::read(&entry_path).unwrap();
+            zip.start_file_from_path(&zip_path, opts).unwrap();
+            zip.write_all(&file).unwrap();
+        } else {
+            // is directory
+            zip.add_directory_from_path(&zip_path, opts).unwrap();
+            zip_dir(zip, &entry_path, &zip_path, opts);
         }
     }
 }

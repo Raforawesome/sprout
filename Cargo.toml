@@ -10,6 +10,7 @@ json5 = "0.4.1"
 reqwest = { version = "0.12.9", features = ["blocking"] }
 rfd = "0.15.0"
 serde = { version = "1.0.203", features = ["derive"] }
+zip = "2.6.1"
 
 [profile.wasm-dev]
 inherits = "dev"
