@@ -60,8 +60,8 @@ pub fn ModScreen() -> Element {
 
                 div {
                     class: "flex flex-col gap-2",
-                    button { class: "btn btn-neutral", "Download Mods" }
-                    button { class: "btn btn-neutral", "Check for Updates" }
+                    button { class: "btn btn-primary btn-disabled", "Download Mods" }
+                    button { class: "btn btn-primary btn-disabled", "Check for Updates" }
                 }
 
                 div {
@@ -83,7 +83,7 @@ pub fn ModTable(mods: Signal<Vec<Mod>>, signal_smask: Signal<Vec<bool>>) -> Elem
         rsx! {
             tr {
                 class: if signal_smask()[i] {
-                    "bg-neutral"
+                    "bg-primary"
                 } else {
                     if db {
                         "bg-base-200 hover:bg-base-100 hover:bg-opacity-10"
@@ -96,9 +96,9 @@ pub fn ModTable(mods: Signal<Vec<Mod>>, signal_smask: Signal<Vec<bool>>) -> Elem
                 },
 
                 th { class: "w-1 text-xs text-secondary", "{i + 1}" } // line number
-                td { "{m.name()}" }
-                td { class: "font-semibold", "{m.version()}" }
-                td { class: "font-semibold", "{m.min_api_version()}" }
+                td { class: "text-base-content", "{m.name()}" }
+                td { class: "font-semibold text-base-content", "{m.version()}" }
+                td { class: "font-semibold text-base-content", "{m.min_api_version()}" }
                 if mods()[i].enabled() {
                     td { class: "font-semibold text-success", " enabled" }
                 } else {
