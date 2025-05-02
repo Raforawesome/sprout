@@ -1,3 +1,4 @@
+pub mod download_mods;
 pub mod import;
 pub mod index;
 pub mod mod_screen;

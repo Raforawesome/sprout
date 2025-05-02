@@ -118,6 +118,7 @@ mod tests {
         use crate::libsprout::smapi::mod_decoder::{ModListing, split_raw_arrays};
 
         let result: String = get_raw_mod_list().unwrap();
+        dbg!(&result);
         let arrays: Vec<&str> = split_raw_arrays(&result);
         let mods: Vec<ModListing> = arrays
             .iter()
@@ -144,5 +145,16 @@ mod tests {
             .find(|m| m.name.to_lowercase().contains("convenient"));
 
         dbg!(search);
+    }
+
+    #[test]
+    fn test_gh_decode() {
+        use crate::libsprout::smapi::gh_decoder::{ModListing, parse_gh_data};
+
+        let data: String = reqwest::blocking::get("https://raw.githubusercontent.com/Pathoschild/SmapiCompatibilityList/refs/heads/develop/data/mods.jsonc")
+            .unwrap().text().unwrap();
+
+        let mods: Vec<ModListing> = parse_gh_data(&data);
+        dbg!(&mods[11]);
     }
 }

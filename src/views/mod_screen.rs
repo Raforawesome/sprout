@@ -4,8 +4,11 @@ use std::{
     path::{Path, PathBuf},
 };
 
-use crate::{AppState, components::TitleHeader, mod_scanner, mod_types::Mod};
-use dioxus::prelude::*;
+use crate::{
+    AppState, components::TitleHeader, launch_config, mod_scanner, mod_types::Mod,
+    views::download_mods::DownloadScreen,
+};
+use dioxus::{desktop::use_window, prelude::*};
 use zip::{ZipWriter, write::SimpleFileOptions};
 
 #[component]
@@ -68,7 +71,13 @@ pub fn ModScreen() -> Element {
 
                 div {
                     class: "flex flex-col gap-2",
-                    button { class: "btn btn-primary btn-disabled", "Download Mods" }
+                    button {
+                        class: "btn btn-primary",
+                        onclick: move |_| {
+                            use_window().new_window(VirtualDom::new(DownloadScreen), launch_config());
+                        },
+                        "Download Mods"
+                    }
                     button { class: "btn btn-primary btn-disabled", "Check for Updates" }
                 }
 
