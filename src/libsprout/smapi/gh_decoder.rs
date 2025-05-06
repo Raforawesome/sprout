@@ -46,7 +46,6 @@ pub struct UnofficialUpdate {
 
 pub fn parse_gh_data(data: &str) -> Vec<ModListing> {
     let Ok(data) = json5::from_str::<GhModData>(data) else {
-        println!("failed parsing");
         warn!("Failed to parse github mod data.");
         return Vec::new();
     };
