@@ -40,7 +40,7 @@ pub fn launch_config() -> Config {
 }
 
 #[cfg(target_os = "linux")]
-pub fn launch_config(visible: bool) -> Config {
+pub fn launch_config() -> Config {
     Config::new()
         .with_background_color((34, 47, 62, 1))
         .with_disable_context_menu(true)
@@ -50,13 +50,12 @@ pub fn launch_config(visible: bool) -> Config {
                 .with_title("Sprout")
                 .with_decorations(false)
                 .with_inner_size(LogicalSize::new(1000, 685))
-                .with_resizable(false)
-                .with_visible(visible),
+                .with_resizable(false),
         )
 }
 
 #[cfg(target_os = "windows")]
-pub fn launch_config(visible: bool) -> Config {
+pub fn launch_config() -> Config {
     Config::new()
         .with_background_color((34, 47, 62, 1))
         .with_disable_context_menu(true)
@@ -66,8 +65,7 @@ pub fn launch_config(visible: bool) -> Config {
                 .with_title("Sprout")
                 .with_inner_size(LogicalSize::new(1000, 685))
                 .with_resizable(false)
-                .with_decorations(false)
-                .with_visible(false),
+                .with_decorations(false),
         )
 }
 
