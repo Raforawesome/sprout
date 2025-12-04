@@ -8,28 +8,26 @@ use dioxus::logger::tracing::{trace, warn};
 
 use super::mod_decoder::{ModListing, split_raw_arrays};
 
-pub static MOD_LISTINGS: LazyLock<Arc<Vec<ModListing>>> = LazyLock::new(|| {
+pub static MOD_LISTINGS: LazyLock<Vec<ModListing>> = LazyLock::new(|| {
     let raw_contents: String = get_raw_mod_list().expect("Failed to make web request!");
     let raw_list: Vec<&str> = split_raw_arrays(&raw_contents);
-    Arc::new(
-        raw_list
-            .iter()
-            .filter_map(|s| match json5::from_str::<ModListing>(s) {
-                Ok(m) => {
-                    trace!(?m.name, "Loaded mod");
-                    Some(m)
-                }
-                Err(e) => {
-                    warn!(?s, ?e, "Failed to parse mod!");
-                    None
-                }
-            })
-            .collect(),
-    )
+    raw_list
+        .iter()
+        .filter_map(|s| match json5::from_str::<ModListing>(s) {
+            Ok(m) => {
+                trace!(?m.name, "Loaded mod");
+                Some(m)
+            }
+            Err(e) => {
+                warn!(?s, ?e, "Failed to parse mod!");
+                None
+            }
+        })
+        .collect()
 });
 
-pub fn get_listings_cached() -> Arc<Vec<ModListing>> {
-    MOD_LISTINGS.clone()
+pub fn get_listings_cached() -> &'static [ModListing] {
+    MOD_LISTINGS.as_ref()
 }
 
 pub fn get_all_mod_listings() -> Vec<ModListing> {
